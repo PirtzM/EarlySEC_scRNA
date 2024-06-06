@@ -517,11 +517,11 @@ View(HQ_Cells_DF$TdtExp_profile)
 
 VlnPlot(HQ_Cells_DF, features='Rb1', group.by='Coexpression')
 
-saveRDS(HQ_Cells_DF, file = "./data/DiestrusMice_mU7_mU30_Final_01252024.rds")
+saveRDS(HQ_Cells_DF, file = "./data/DiestrusMice_mU7_mU30_Final_mergedCellID_02122024.rds")
 
 #Sample Analysis####
 #Load RDS File
-IntData = readRDS(file ="./data/DiestrusMice_mU7_mU30_Final_01252024.rds",  # Filename
+IntData = readRDS(file ="./data/DiestrusMice_mU7_mU30_Final_mergedCellID_02122024.rds",  # Filename
                   refhook = NULL)
 ncol(IntData) #37,543 Cells
 
@@ -621,7 +621,6 @@ CellTypeNames <- RenameIdents(IntData,
 )
 
 IntData$seurat_clusters_CC <- Idents(CellTypeNames)
-saveRDS(IntData, file ="./data/DiestrusMice_mU7_mU30_Final_01252024.rds")
 
 #Name by broad cell type - for later CellChat Analysis
 Idents(IntData) <- IntData$seurat_clusters2
