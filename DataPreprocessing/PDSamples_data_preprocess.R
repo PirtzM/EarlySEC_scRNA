@@ -14,7 +14,7 @@ library(patchwork)
 setwd("/workdir/mgp73/Studies/MouseSampleAnalysis/Diestrus_mU7_mU30_fixedDF/scripts")
 
 #Load full object ####
-IntData = readRDS(file ='./data/DiestrusMice_mU7_mU30_Final_01252024.rds',  # Filename
+IntData = readRDS(file ='./data/DiestrusMice_mU7_mU30_Final_mergedCellID_02122024.rds',  # Filename
                   refhook = NULL)
 ncol(IntData) #37543 cells
 
@@ -93,6 +93,7 @@ FeaturePlot(EarOnly, features='Epcam')
 # Save as RDS files
 saveRDS(EarOnly, file = "./data/EarCan_recluster_mU7_mU30_10282023.rds")
 
+#Sample Analysis####
 #Load Status RDS Files ####
 EarOnly = readRDS(file ="./data/EarCan_recluster_mU7_mU30_10282023.rds",  # Filename
                   refhook = NULL)
