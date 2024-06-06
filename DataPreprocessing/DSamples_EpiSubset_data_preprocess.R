@@ -15,7 +15,7 @@ library(tidyr)
 #Set working directory
 setwd("/workdir/mgp73/Studies/MouseSampleAnalysis/Diestrus_mU7_mU30_fixedDF/scripts")
 
-#Load late Epi Subset####
+#Load Dysplastic Subset####
 EpiOnly <- readRDS(file = "./data/LateCan_recluster_mU7_mU30_10292023.rds",  # Filename
                    refhook = NULL)
 ncol(EpiOnly) #7,329 cells
@@ -100,6 +100,29 @@ ncol(EpiOnly) #7,063 cells
 
 Idents(EpiOnly) <- EpiOnly$seurat_clusters2 #Set Active Identity
 
+#Summary Epi Features ####
+Epifeatures = c('Epcam','Pax8','TdTomato-UTR', #General Epithelium
+                'Ly6a','Cd44','Ezh2','Fut4',
+                'Itga6','Klf4','Klf5','Klf6','Lgr5','Lrig1','Neat1','Pou5f1',
+                'Slc1a3','Slc38a2','Sox2','Sox9','Sox17','Zfp36', #Progenitor 
+                'Foxa2','Foxj1','Aldh1a1','Axin2','Prss29','Lgr4','Wif1','Prom1', #Glandular Epithelium
+                'Tacstd2','Krt13','Lpar3','Met','Sprr2f','Wnt7a','Wnt7b','Muc1','Ovgp1',#Luminal Epithelium
+                'Cdkn2a','Ccne1','Cdk1','Cdk4','Cdkn1c','Pcna','Mki67' #Cycling genes
+)
+EpiDot = DotPlot(EpiOnly, features=Epifeatures, col.min=0, col.max=2.5)+
+  scale_color_viridis(option = 'A', begin=0.9, end=0)+ #change to magma color scale
+  theme(axis.text.x=element_text(angle=90, hjust=1, vjust=0.5, face='italic'))
+EpiDot
+
+#Stem Markers ####
+SCfeatures = c('Aldh1a1','Ly6a','Cd44','Ezh2','Fut4','Hoxb5','Tert','Nt5e',
+               'Itga6','Klf4','Klf5','Klf6','Lgr5','Lrig1','Neat1','Pax8','Prom1', 'Pou5f1',
+               'Slc1a3','Slc38a2','Sox2','Sox9','Sox17','Tacstd2','Zfp36')
+DotSC = DotPlot(EpiOnly, features=SCfeatures, col.min=0, col.max=2.5) +
+  scale_color_viridis(option = 'A', begin=0.9, end=0) + #change to magma color scale
+  theme(axis.text.x=element_text(angle=90, hjust=1, vjust=0.5, face='italic'))
+DotSC
+
 #Cluster Renaming ####
 #Fine clusters
 Idents(EpiOnly) <- EpiOnly$seurat_clusters
@@ -138,29 +161,6 @@ EpiOnly$seurat_clusters_CC <- Idents(CellTypeNames)
 Idents(EpiOnly) <- EpiOnly$seurat_clusters_CC
 
 saveRDS(EpiOnly, "./data/Late_Epi_mU7_mU30_recluster_01282024_CE.rds")
-
-#Summary Epi Features ####
-Epifeatures = c('Epcam','Pax8','TdTomato-UTR', #General Epithelium
-                'Ly6a','Cd44','Ezh2','Fut4',
-                'Itga6','Klf4','Klf5','Klf6','Lgr5','Lrig1','Neat1','Pou5f1',
-                'Slc1a3','Slc38a2','Sox2','Sox9','Sox17','Zfp36', #Progenitor 
-                'Foxa2','Foxj1','Aldh1a1','Axin2','Prss29','Lgr4','Wif1','Prom1', #Glandular Epithelium
-                'Tacstd2','Krt13','Lpar3','Met','Sprr2f','Wnt7a','Wnt7b','Muc1','Ovgp1',#Luminal Epithelium
-                'Cdkn2a','Ccne1','Cdk1','Cdk4','Cdkn1c','Pcna','Mki67' #Cycling genes
-)
-EpiDot = DotPlot(EpiOnly, features=Epifeatures, col.min=0, col.max=2.5)+
-  scale_color_viridis(option = 'A', begin=0.9, end=0)+ #change to magma color scale
-  theme(axis.text.x=element_text(angle=90, hjust=1, vjust=0.5, face='italic'))
-EpiDot
-
-#Stem Markers ####
-SCfeatures = c('Aldh1a1','Ly6a','Cd44','Ezh2','Fut4','Hoxb5','Tert','Nt5e',
-               'Itga6','Klf4','Klf5','Klf6','Lgr5','Lrig1','Neat1','Pax8','Prom1', 'Pou5f1',
-               'Slc1a3','Slc38a2','Sox2','Sox9','Sox17','Tacstd2','Zfp36')
-DotSC = DotPlot(EpiOnly, features=SCfeatures, col.min=0, col.max=2.5) +
-  scale_color_viridis(option = 'A', begin=0.9, end=0) + #change to magma color scale
-  theme(axis.text.x=element_text(angle=90, hjust=1, vjust=0.5, face='italic'))
-DotSC
 
 #UMAP ####
 UMAP = DimPlot(object=EpiOnly, reduction="umap", group.by = "seurat_clusters2", 
