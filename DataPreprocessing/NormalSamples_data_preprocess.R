@@ -14,7 +14,7 @@ library(patchwork)
 setwd("/workdir/mgp73/Studies/MouseSampleAnalysis/Diestrus_mU7_mU30_fixedDF/scripts")
 
 #Load full object ####
-IntData = readRDS(file ='./data/DiestrusMice_mU7_mU30_Final_01252024.rds',  # Filename
+IntData = readRDS(file ='./data/DiestrusMice_mU7_mU30_Final_mergedCellID_02122024.rds',  # Filename
                   refhook = NULL)
 ncol(IntData) #37543 cells
 
@@ -92,6 +92,7 @@ ContOnlyUMAP
 # Save as RDS files
 saveRDS(ContOnly, file = "./data/cont_mU7_mU30_Final_01262024.rds")
 
+#Sample Analysis####
 #Load Status RDS Files ####
 ContOnly = readRDS(file ="./data/cont_mU7_mU30_Final_01262024.rds",  # Filename
                    refhook = NULL)
