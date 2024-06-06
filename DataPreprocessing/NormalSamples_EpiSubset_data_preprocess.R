@@ -15,7 +15,7 @@ library(tidyr)
 #Set working directory
 setwd("/workdir/mgp73/Studies/MouseSampleAnalysis/Diestrus_mU7_mU30_fixedDF/scripts")
 
-#Load Control Epi Subset####
+#Load Normal Subset####
 EpiOnly <- readRDS(file = "./data/cont_mU7_mU30_Final_01262024.rds",  # Filename
                    refhook = NULL)
 ncol(EpiOnly) #7,614 cells
