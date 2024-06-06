@@ -16,7 +16,7 @@ library(tidyr)
 setwd("/workdir/mgp73/Studies/MouseSampleAnalysis/Diestrus_mU7_mU30_fixedDF/scripts")
 
 #Load full dataset####
-EpiOnly <- readRDS(file = "./data/DiestrusMice_mU7_mU30_Final_01252024.rds",  # Filename
+EpiOnly <- readRDS(file = "./data/DiestrusMice_mU7_mU30_Final_mergedCellID_02012024.rds",  # Filename
                    refhook = NULL)
 ncol(EpiOnly) #37543 cells
 
@@ -89,9 +89,6 @@ EpiOnlyUMAP <- DimPlot(object = EpiOnly,                 # Seurat object
                        pt.size = 1,                      # Size of each dot is (0.1 is the smallest)
                        label.size = 5)                    # Font size for label
 EpiOnlyUMAP
-
-#Check Clusters
-TestCluster = FindAllMarkers(EpiOnly, logfc.threshold=0.5)
 
 # Save as RDS files
 saveRDS(EpiOnly, file = "./data/allDiestrus_Epi_mU7_mU30_recluster_final_01302024_noLE3.rds")
