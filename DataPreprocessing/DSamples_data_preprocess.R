@@ -14,13 +14,13 @@ library(patchwork)
 setwd("/workdir/mgp73/Studies/MouseSampleAnalysis/Diestrus_mU7_mU30_fixedDF/scripts")
 
 #Load full object ####
-IntData = readRDS(file ='./data/DiestrusMice_mU7_mU30_Final_01252024.rds',  # Filename
+IntData = readRDS(file ='./data/DiestrusMice_mU7_mU30_Final_mergedCellID_02122024.rds',  # Filename
                   refhook = NULL)
 ncol(IntData) #37543 cells
 
 #Subset late SEC stage and recluster####
 Idents(IntData) <- IntData$RedSEC_stage #Set Active Identity
-LOnly <- subset(IntData, idents=c('lateSEC'))
+LOnly <- subset(IntData, idents=c('lateSEC')) #Dysplastic samples
 ncol(LOnly) #12,717 cells
 
 #Rescale and Recluster
