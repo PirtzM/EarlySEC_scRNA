@@ -12,14 +12,17 @@
 
 
 ### Subdirectories
-`Data_Preprocessing`: quality control and object preparation for all cells and epithelial subsets of combined datasets and normal, pre-dysplastic, and dysplastic datasets.  
+`Data_Preprocessing`: quality control and object preparation for all cells and epithelial subsets of combined datasets and normal, pre-dysplastic, and dysplastic datasets. Preprocessing is also including gene expression analysis and cluster renaming.
 
-`Figure_Scripts`: code for recreating figures from the manuscript.  
+`Figure_Scripts`: code for recreating figures from the manuscript. 
+
+`Data_Analysis`: code for recreating differential expression analysis used for identifying genes of interest in the manuscript.
 
 `Reproducibility`: data alignment and R session information to recreate conclusions.  
 
 
 ## Contact
-Alexander Yu. Nikitin ([an58@cornell.edu](an58@cornell.edu))  
-Benjamin D. Cosgrove ([bdc68@cornell.edu](bdc68@cornell.edu))  
 Matalin G. Pirtz ([mgp73@cornell.edu](mgp73@cornell.edu))  
+Alexander Yu. Nikitin, PhD ([an58@cornell.edu](an58@cornell.edu))  
+Benjamin D. Cosgrove, PhD ([bdc68@cornell.edu](bdc68@cornell.edu))  
+
