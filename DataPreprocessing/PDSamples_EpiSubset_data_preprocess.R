@@ -15,7 +15,7 @@ library(tidyr)
 #Set working directory
 setwd("/workdir/mgp73/Studies/MouseSampleAnalysis/Diestrus_mU7_mU30_fixedDF/scripts")
 
-#Load Early Epi Subset####
+#Load Pre-dysplastic Subset####
 EpiOnly <- readRDS(file = "./data/EarCan_recluster_mU7_mU30_10282023.rds",  # Filename
                    refhook = NULL)
 ncol(EpiOnly) #17,212 cells
@@ -93,6 +93,7 @@ EpiOnlyUMAP
 # Save as RDS files
 saveRDS(EpiOnly, file = "./data/Ear_Epi_mU7_mU30_recluster_11212023_withUECE.rds")
 
+#Sample Analysis####
 #Load Reclustered dataset ####
 EpiOnly = readRDS(file ="./data/Ear_Epi_mU7_mU30_recluster_11212023_withUECE.rds",  # Filename
                   refhook = NULL)
