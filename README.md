@@ -20,6 +20,8 @@
 
 `Reproducibility`: data alignment and R session information to recreate conclusions.  
 
+### Note
+All Visium analysis was completed using LoupeBrowser7. Files for analysis are available through [Dryad]() [active upon publication] 
 
 ## Contact
 Matalin G. Pirtz ([mgp73@cornell.edu](mgp73@cornell.edu))  
