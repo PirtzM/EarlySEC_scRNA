@@ -21,7 +21,7 @@ Refer to code in `EarlySEC_scRNA/DataPreprocessing/` to reproduce preprocessing 
 
 ### Seurat Objects for All Sample, Normal, Pre-dysplastic, and Dysplastic datasets
 Use `SC_diestrus_metadirectory_final.csv` to identify sample file directories and additional sample level metadata.  
-All samples were processed together according to `AllSamples_data_preprocess`. Here, you will find step by step details on how to remove ambient RNA signals with SoupX (v1.6.2), identifying doublets with DoubletFinder (v2.0.3), and preparing integrated/batch corrected objects with Seurat (v4.3.0) and harmony (v0.1.0).  
+All samples were processed together according to `AllSamples_data_preprocess`. Here, you will find step by step details on how to remove ambient RNA signals with SoupX (v1.6.2), identifying doublets with DoubletFinder (v2.0.3), and preparing integrated/batch corrected objects with Seurat (v4.3.0) and harmony (v0.1.1).  
 
 Each SEC specific dataset was subsetted from this All Sample dataset according to its stage. After subsetting, samples were re-scaled, re-integrated, and reclustered. Follow their individual preprocessing file for specific information.  
 
