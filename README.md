@@ -10,6 +10,7 @@
 
 `Raw Data`: raw and processed scRNA-seq and Visium data for the mouse uterus at normal, pre-dysplastic, and dysplastic stages of SEC. (GEO accession number) [active upon publication]  
 
+Note: All Visium analysis was completed using LoupeBrowser7. Aligned files for analysis are available through [Dryad]() [active upon publication]
 
 ### Subdirectories
 `Data_Preprocessing`: quality control and object preparation for all cells and epithelial subsets of combined datasets and normal, pre-dysplastic, and dysplastic datasets. Preprocessing is also including gene expression analysis and cluster renaming.
@@ -20,8 +21,6 @@
 
 `Reproducibility`: data alignment and R session information to recreate conclusions.  
 
-### Note
-All Visium analysis was completed using LoupeBrowser7. Files for analysis are available through [Dryad]() [active upon publication] 
 
 ## Contact
 Matalin G. Pirtz ([mgp73@cornell.edu](mgp73@cornell.edu))  
