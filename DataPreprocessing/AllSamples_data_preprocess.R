@@ -14,6 +14,7 @@ library(ggplot2)
 library(SoupX)
 library(tidyr)
 library(DoubletFinder)
+library(hash)
 
 #Set working directory
 setwd("/workdir/mgp73/Studies/MouseSampleAnalysis/Diestrus_mU7_mU30_fixedDF/scripts")
