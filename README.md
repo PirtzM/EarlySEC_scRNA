@@ -13,7 +13,7 @@
 Note: All Visium analysis was completed using LoupeBrowser7. Aligned files for analysis are available through [Dryad]() [active upon publication]
 
 ### Subdirectories
-`Data_Preprocessing`: quality control and object preparation for all cells and epithelial subsets of combined datasets and normal, pre-dysplastic, and dysplastic datasets. Preprocessing is also including gene expression analysis and cluster renaming.
+`DataPreprocessing`: quality control and object preparation for all cells and epithelial subsets of combined datasets and normal, pre-dysplastic, and dysplastic datasets. Preprocessing is also including gene expression analysis and cluster renaming.
 
 `Figure_Scripts`: code for recreating figures from the manuscript. 
 
