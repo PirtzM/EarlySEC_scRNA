@@ -14,13 +14,13 @@ library(patchwork)
 setwd("/workdir/mgp73/Studies/MouseSampleAnalysis/Diestrus_mU7_mU30_fixedDF/scripts")
 
 #Load full object ####
-IntData = readRDS(file ='./data/DiestrusMice_mU7_mU30_Final_mergedCellID_02122024.rds',  # Filename
+IntData = readRDS(file ='./data/DiestrusMice_mU7_mU30_Final_01182025_simple.rds',  # Filename
                   refhook = NULL)
 ncol(IntData) #37543 cells
 
 #Subset late SEC stage and recluster####
 Idents(IntData) <- IntData$RedSEC_stage #Set Active Identity
-LOnly <- subset(IntData, idents=c('lateSEC')) #Dysplastic samples
+LOnly <- subset(IntData, idents=c('Dysplastic')) #Dysplastic samples
 ncol(LOnly) #12,717 cells
 
 #Rescale and Recluster
@@ -91,11 +91,11 @@ LOnlyUMAP <- DimPlot(object = LOnly,                 # Seurat object
 LOnlyUMAP
 
 # Save as RDS files
-saveRDS(LOnly, file = "./data/LateCan_recluster_mU7_mU30_10292023.rds")
+saveRDS(LOnly, file = "./data/LateCan_recluster_mU7_mU30_01182025_simple.rds")
 
 #Sample Analysis####
 #Load Status RDS Files ####
-LOnly = readRDS(file ="./data/LateCan_recluster_mU7_mU30_10292023.rds",  # Filename
+LOnly = readRDS(file ="./data/LateCan_recluster_mU7_mU30_01182025_simple.rds",  # Filename
                 refhook = NULL)
 ncol(LOnly) #12,717 cells
 
@@ -126,7 +126,7 @@ DotSC = DotPlot(LOnly, features=SCfeatures, col.min=0, col.max=2.5)+#, group.by=
   theme(axis.text.x=element_text(angle=90, hjust=1, vjust=0.5, face='italic'))
 DotSC
 
-#Diff Gene Expression - Progenitor Populations
+#Diff Gene Expression - Progenitor like
 DotPlot(LOnly, features=c('Pax2','Hoxb5','Tert','Sox17','Klf5', #nucleus
                              'Nt5e','Lpar3','Lgr4', #membrane
                              'Wfdc2' #Secreted
@@ -152,19 +152,19 @@ ImDot
 Idents(LOnly) <- LOnly$seurat_clusters
 
 CellTypeNames <- RenameIdents(LOnly, 
-                              '0'= 'LE',
-                              '1'= 'Progenitor-like',
+                              '0'= 'D - LE',
+                              '1'= 'D - LE',
                               '2'= 'Lymph',
-                              '3'= 'Fib 1',
-                              '4'= 'mt High',
+                              '3'= 'D - Fib 1',
+                              '4'= 'COX/MAL Epi',
                               '5'= 'GE',
-                              '6'= 'Cycling',
+                              '6'= 'Cycling Epi',
                               '7'= 'Macrophage',
                               '8'= 'Vascular',
-                              '9'= 'Fib 2',
+                              '9'= 'D - Fib 2',
                               '10'= 'Lymphocyte',
-                              '11'= 'Progenitor-like 2',
-                              '12'= 'Fib 3',
+                              '11'= 'D - LE',
+                              '12'= 'D - Fib 3',
                               '13'= 'Mesothelium'
 )
 
@@ -172,19 +172,65 @@ LOnly$seurat_clusters2 <- Idents(CellTypeNames)
 
 Idents(LOnly) <- LOnly$seurat_clusters2
 
+#Fine Grain - Simple Epithelium (SE)
+Idents(LOnly) <- LOnly$seurat_clusters
+
+CellTypeNames <- RenameIdents(LOnly, 
+                              '0'= 'Epithelium',
+                              '1'= 'Epithelium',
+                              '2'= 'Lymph',
+                              '3'= 'D - Fib 1',
+                              '4'= 'Epithelium',
+                              '5'= 'Epithelium',
+                              '6'= 'Epithelium',
+                              '7'= 'Macrophage',
+                              '8'= 'Vascular',
+                              '9'= 'D - Fib 2',
+                              '10'= 'Lymphocyte',
+                              '11'= 'Epithelium',
+                              '12'= 'D - Fib 3',
+                              '13'= 'Mesothelium'
+)
+
+LOnly$seurat_clusters_SE <- Idents(CellTypeNames)
+
+Idents(LOnly) <- LOnly$seurat_clusters_SE
+
+#Fine Grain - cor bar chart (BC)
+Idents(LOnly) <- LOnly$seurat_clusters
+
+CellTypeNames <- RenameIdents(LOnly, 
+                              '0'= 'Epithelium',
+                              '1'= 'Epithelium',
+                              '2'= 'Lymph',
+                              '3'= 'Fib 1',
+                              '4'= 'Epithelium',
+                              '5'= 'Epithelium',
+                              '6'= 'Epithelium',
+                              '7'= 'Macrophage',
+                              '8'= 'Vascular',
+                              '9'= 'Fib 2',
+                              '10'= 'Lymphocyte',
+                              '11'= 'Epithelium',
+                              '12'= 'Fib 3',
+                              '13'= 'Mesothelium'
+)
+
+LOnly$seurat_clusters_BC <- Idents(CellTypeNames)
+
+Idents(LOnly) <- LOnly$seurat_clusters_BC
+
 #Course Grain
 Idents(LOnly) <- LOnly$seurat_clusters2
 
 CellTypeNames <- RenameIdents(LOnly, 
-                              'Progenitor-like'='EP',
-                              'Progenitor-like 2'='EP',
-                              'mt High'='UE',
-                              'LE'='LE',
-                              'Cycling'='CE',
+                              'COX/MAL Epi'='COX/MAL',
+                              'D - LE'='LE',
+                              'Cycling Epi'='CE',
                               'GE'='GE',
-                              'Fib 1'='Fib',
-                              'Fib 2'='Fib',
-                              'Fib 3'='Fib',
+                              'D - Fib 1'='Fib',
+                              'D - Fib 2'='Fib',
+                              'D - Fib 3'='Fib',
                               'Mesothelium'='Meso',
                               'Lymph'='LV',
                               'Vascular'='BV',
@@ -194,21 +240,19 @@ CellTypeNames <- RenameIdents(LOnly,
 )
 
 LOnly$seurat_clusters_CC <- Idents(CellTypeNames)
-saveRDS(LOnly, "./data/LateCan_recluster_mU7_mU30_10292023.rds")
+
 
 #Name by broad cell type
 Idents(LOnly) <- LOnly$seurat_clusters2
 
 CellTypeNames <- RenameIdents(LOnly, 
-                              'Progenitor-like'='Epi',
-                              'Progenitor-like 2'='Epi',
-                              'mt High'='Epi',
-                              'LE'='Epi',
-                              'Cycling'='Epi',
+                              'COX/MAL Epi'='Epi',
+                              'D - LE'='Epi',
+                              'Cycling Epi'='Epi',
                               'GE'='Epi',
-                              'Fib 1'='Fib',
-                              'Fib 2'='Fib',
-                              'Fib 3'='Fib',
+                              'D - Fib 1'='Fib',
+                              'D - Fib 2'='Fib',
+                              'D - Fib 3'='Fib',
                               'Mesothelium'='Meso',
                               'Lymph'='LV',
                               'Vascular'='BV',
@@ -218,7 +262,7 @@ CellTypeNames <- RenameIdents(LOnly,
 )
 
 LOnly$seurat_clusters_cellType <- Idents(CellTypeNames)
-saveRDS(LOnly, "./data/LateCan_recluster_mU7_mU30_10292023.rds")
+saveRDS(LOnly, "./data/LateCan_recluster_mU7_mU30_01182025_simple.rds")
 
 #UMAP ####
 UMAP = DimPlot(object=LOnly, reduction="umap", group.by='seurat_clusters2',  
