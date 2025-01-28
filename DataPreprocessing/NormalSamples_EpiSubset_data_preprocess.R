@@ -16,12 +16,12 @@ library(tidyr)
 setwd("/workdir/mgp73/Studies/MouseSampleAnalysis/Diestrus_mU7_mU30_fixedDF/scripts")
 
 #Load Normal Subset####
-EpiOnly <- readRDS(file = "./data/cont_mU7_mU30_Final_01262024.rds",  # Filename
+EpiOnly <- readRDS(file = "./data/cont_mU7_mU30_Final_01182025_simple.rds",  # Filename
                    refhook = NULL)
 ncol(EpiOnly) #7,614 cells
 
 Idents(EpiOnly) <- EpiOnly$seurat_clusters_CC #Set Active Identity
-EpiOnly <- subset(EpiOnly, idents=c('EP','LE','GE','CE','UE'))
+EpiOnly <- subset(EpiOnly, idents=c('LE','GE','CE','COX/MAL'))
 ncol(EpiOnly) #4,689 cells
 
 #Rescale and Recluster
@@ -90,11 +90,11 @@ EpiOnlyUMAP <- DimPlot(object = EpiOnly,                 # Seurat object
 EpiOnlyUMAP
 
 # Save as RDS files
-saveRDS(EpiOnly, file = "./data/FinalSamples/cont_Epi_mU7_mU30_Final_01262024_noMeso.rds")
+saveRDS(EpiOnly, file = "./data/FinalSamples/cont_Epi_mU7_mU30_Final_01182025.rds")
 
 #Sample Analysis####
 #Load Reclustered dataset ####
-EpiOnly = readRDS(file ='./data/FinalSamples/cont_Epi_mU7_mU30_Final_01262024_noMeso.rds', # Filename
+EpiOnly = readRDS(file ='./data/FinalSamples/cont_Epi_mU7_mU30_Final_01182025.rds', # Filename
                   refhook = NULL)
 ncol(EpiOnly) #4,689 cells
 
@@ -125,40 +125,57 @@ DotSC
 
 #Cluster Renaming ####
 #Fine Clustering
-Idents(EpiOnly) <- EpiOnly$seurat_clusters
+Idents(ContEpi) <- ContEpi$seurat_clusters
 
-CellTypeNames <- RenameIdents(EpiOnly, 
-                              '0'= 'Progenitor', #referred to as 'Progenitor-like' in manuscript
-                              '1'= 'LE 1',
-                              '2'= 'Epithelial - Foxj1+',
+CellTypeNames <- RenameIdents(ContEpi, 
+                              '0'= 'N - LE 1',
+                              '1'= 'N - LE 2',
+                              '2'= 'DDP',
                               '3'= 'Cycling',
-                              '4'= 'LE 2',
+                              '4'= 'N - LE 3',
                               '5'= 'GE',
-                              '6'= 'Unidentified' #referred to as 'mt High' in manuscript
+                              '6'= 'COX/MAL'
 )
 
-EpiOnly$seurat_clusters2 <- Idents(CellTypeNames)
+ContEpi$seurat_clusters2 <- Idents(CellTypeNames)
 
-Idents(EpiOnly) <- EpiOnly$seurat_clusters2
+Idents(ContEpi) <- ContEpi$seurat_clusters2
+
+#Fine Clustering - Simplified
+Idents(ContEpi) <- ContEpi$seurat_clusters
+
+CellTypeNames <- RenameIdents(ContEpi, 
+                              '0'= 'LE 1',
+                              '1'= 'LE 2',
+                              '2'= 'DDP',
+                              '3'= 'Cycling',
+                              '4'= 'LE 3',
+                              '5'= 'GE',
+                              '6'= 'COX/MAL'
+)
+
+ContEpi$seurat_clusters_SE <- Idents(CellTypeNames)
+
+Idents(ContEpi) <- ContEpi$seurat_clusters_SE
 
 #Coarse Clustering
-Idents(EpiOnly) <- EpiOnly$seurat_clusters2
+Idents(ContEpi) <- ContEpi$seurat_clusters2
 
-CellTypeNames <- RenameIdents(EpiOnly, 
-                              'Progenitor'= 'EP', #referred to as 'Progenitor-like' in manuscript
-                              'LE 1'= 'LE',
-                              'Epithelial - Foxj1+'= 'Foxj1+',
+CellTypeNames <- RenameIdents(ContEpi, 
+                              'N - LE 1'= 'LE',
+                              'N - LE 2'= 'LE',
+                              'DDP'= 'DDP',
                               'Cycling'= 'CE',
-                              'LE 2'= 'LE',
+                              'N - LE 3'= 'LE',
                               'GE'= 'GE',
-                              'Unidentified'= 'UE' #referred to as 'mt High' in manuscript
+                              'COX/MAL'= 'CM'
 )
 
-EpiOnly$seurat_clusters_CC <- Idents(CellTypeNames)
+ContEpi$seurat_clusters_CC <- Idents(CellTypeNames)
 
-Idents(EpiOnly) <- EpiOnly$seurat_clusters_CC
+Idents(ContEpi) <- ContEpi$seurat_clusters_CC
 
-saveRDS(EpiOnly, "./data/FinalSamples/cont_Epi_mU7_mU30_Final_01262024_noMeso.rds")
+saveRDS(ContEpi, "./data/FinalSamples/cont_Epi_mU7_mU30_Final_01182025.rds")
 
 #UMAP ####
 UMAP = DimPlot(object=EpiOnly, reduction="umap", group.by = "seurat_clusters2", 
