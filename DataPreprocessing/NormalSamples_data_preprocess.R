@@ -20,7 +20,7 @@ ncol(IntData) #37543 cells
 
 #Subset by Cancer Status and Recluster####
 Idents(IntData) <- IntData$Cancer_Status #Set Active Identity
-ContOnly <- subset(IntData, idents=c('Normal')) #Normal samples
+ContOnly <- subset(IntData, idents=c('control')) #Normal samples
 ncol(ContOnly) #7,614 cells
 
 #Rescale and Recluster
