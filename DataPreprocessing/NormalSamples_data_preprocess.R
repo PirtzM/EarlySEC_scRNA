@@ -14,13 +14,13 @@ library(patchwork)
 setwd("/workdir/mgp73/Studies/MouseSampleAnalysis/Diestrus_mU7_mU30_fixedDF/scripts")
 
 #Load full object ####
-IntData = readRDS(file ='./data/DiestrusMice_mU7_mU30_Final_mergedCellID_02122024.rds',  # Filename
+IntData = readRDS(file ="./data/DiestrusMice_mU7_mU30_Final_01182025_simple.rds",  # Filename
                   refhook = NULL)
 ncol(IntData) #37543 cells
 
 #Subset by Cancer Status and Recluster####
 Idents(IntData) <- IntData$Cancer_Status #Set Active Identity
-ContOnly <- subset(IntData, idents=c('control')) #Normal samples
+ContOnly <- subset(IntData, idents=c('Normal')) #Normal samples
 ncol(ContOnly) #7,614 cells
 
 #Rescale and Recluster
@@ -90,11 +90,11 @@ ContOnlyUMAP <- DimPlot(object = ContOnly,                 # Seurat object
 ContOnlyUMAP
 
 # Save as RDS files
-saveRDS(ContOnly, file = "./data/cont_mU7_mU30_Final_01262024.rds")
+saveRDS(ContOnly, file = "./data/cont_mU7_mU30_Final_01182025_simple.rds")
 
 #Sample Analysis####
 #Load Status RDS Files ####
-ContOnly = readRDS(file ="./data/cont_mU7_mU30_Final_01262024.rds",  # Filename
+ContOnly = readRDS(file ="./data/cont_mU7_mU30_Final_01182025_simple.rds",  # Filename
                    refhook = NULL)
 ncol(ContOnly) #7,614 cells
 
@@ -151,16 +151,16 @@ ImDot
 Idents(ContOnly) <- ContOnly$seurat_clusters
 
 CellTypeNames <- RenameIdents(ContOnly, 
-                              '0'= 'LE 1',
+                              '0'= 'N - LE',
                               '1'= 'Lymph',
-                              '2'= 'Progenitor-like',
-                              '3'= 'Cycling',
-                              '4'= 'Fib 1',
-                              '5'= 'LE 2',
+                              '2'= 'N - LE',
+                              '3'= 'Cycling Epi',
+                              '4'= 'N - Fib 1',
+                              '5'= 'N - LE',
                               '6'= 'Vascular',
                               '7'= 'GE',
-                              '8'= 'Fib 2',
-                              '9'= 'Unidentified', #referred to as 'mt High' in manuscript
+                              '8'= 'N - Fib 2',
+                              '9'= 'COX/MAL Epi',
                               '10'= 'Macrophage',
                               '11'= 'NK cell',
                               '12'= 'Smooth Muscle',
@@ -172,18 +172,66 @@ ContOnly$seurat_clusters2 <- Idents(CellTypeNames)
 
 Idents(ContOnly) <- ContOnly$seurat_clusters2
 
+#Fine Grain - Simple epithelium (SE)
+Idents(ContOnly) <- ContOnly$seurat_clusters
+
+CellTypeNames <- RenameIdents(ContOnly, 
+                              '0'= 'Epithelium',
+                              '1'= 'Lymph',
+                              '2'= 'Epithelium',
+                              '3'= 'Epithelium',
+                              '4'= 'N - Fib 1',
+                              '5'= 'Epithelium',
+                              '6'= 'Vascular',
+                              '7'= 'Epithelium',
+                              '8'= 'N - Fib 2',
+                              '9'= 'Epithelium',
+                              '10'= 'Macrophage',
+                              '11'= 'NK cell',
+                              '12'= 'Smooth Muscle',
+                              '13'= 'T cell',
+                              '14'= 'Mesothelium'
+)
+
+ContOnly$seurat_clusters_SE <- Idents(CellTypeNames)
+
+Idents(ContOnly) <- ContOnly$seurat_clusters_SE
+
+#Fine Grain - for bar chart (BC)
+Idents(ContOnly) <- ContOnly$seurat_clusters
+
+CellTypeNames <- RenameIdents(ContOnly, 
+                              '0'= 'Epithelium',
+                              '1'= 'Lymph',
+                              '2'= 'Epithelium',
+                              '3'= 'Epithelium',
+                              '4'= 'Fib 1',
+                              '5'= 'Epithelium',
+                              '6'= 'Vascular',
+                              '7'= 'Epithelium',
+                              '8'= 'Fib 2',
+                              '9'= 'Epithelium',
+                              '10'= 'Macrophage',
+                              '11'= 'NK cell',
+                              '12'= 'Smooth Muscle',
+                              '13'= 'T cell',
+                              '14'= 'Mesothelium'
+)
+
+ContOnly$seurat_clusters_BC <- Idents(CellTypeNames)
+
+Idents(ContOnly) <- ContOnly$seurat_clusters_BC
+
 #Course Grain
 Idents(ContOnly) <- ContOnly$seurat_clusters2
 
 CellTypeNames <- RenameIdents(ContOnly, 
-                              'Progenitor-like'='EP',
-                              'LE 1'='LE',
-                              'LE 2'='LE',
-                              'Cycling'='CE',
+                              'N - LE'='LE',
+                              'Cycling Epi'='CE',
                               'GE'='GE',
-                              'Unidentified'='UE', #referred to as 'mt High' in manuscript
-                              'Fib 1'='Fib',
-                              'Fib 2'='Fib',
+                              'COX/MAL Epi'='COX/MAL',
+                              'N - Fib 1'='Fib',
+                              'N - Fib 2'='Fib',
                               'Mesothelium'='Meso',
                               'Smooth Muscle'='SM',
                               'Lymph'='LV',
@@ -195,7 +243,29 @@ CellTypeNames <- RenameIdents(ContOnly,
 )
 
 ContOnly$seurat_clusters_CC <- Idents(CellTypeNames)
-saveRDS(ContOnly, "./data/cont_mU7_mU30_Final_01262024.rds")
+
+#Name by broad cell type
+Idents(ContOnly) <- ContOnly$seurat_clusters2
+
+CellTypeNames <- RenameIdents(ContOnly, 
+                              'N - LE'='Epi',
+                              'Cycling Epi'='Epi',
+                              'GE'='Epi',
+                              'COX/MAL Epi'='Epi',
+                              'N - Fib 1'='Fib',
+                              'N - Fib 2'='Fib',
+                              'Mesothelium'='Meso',
+                              'Smooth Muscle'='SM',
+                              'Lymph'='LV',
+                              'Vascular'='BV',
+                              'Macrophage'='Im',
+                              'NK cell'='Im',
+                              'T cell'='Im'
+                              
+)
+
+ContOnly$seurat_clusters_cellType <- Idents(CellTypeNames)
+saveRDS(ContOnly, "./data/cont_mU7_mU30_Final_01182025_simple.rds")
 
 #UMAP ####
 UMAP = DimPlot(object=ContOnly, reduction="umap", group.by = "seurat_clusters2",
