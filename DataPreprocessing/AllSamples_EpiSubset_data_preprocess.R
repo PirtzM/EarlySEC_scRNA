@@ -16,12 +16,12 @@ library(tidyr)
 setwd("/workdir/mgp73/Studies/MouseSampleAnalysis/Diestrus_mU7_mU30_fixedDF/scripts")
 
 #Load full dataset####
-EpiOnly <- readRDS(file = "./data/DiestrusMice_mU7_mU30_Final_mergedCellID_02012024.rds",  # Filename
+EpiOnly <- readRDS(file = "./data/DiestrusMice_mU7_mU30_Final_01182025.rds",  # Filename
                    refhook = NULL)
 ncol(EpiOnly) #37543 cells
 
 Idents(EpiOnly) <- EpiOnly$seurat_clusters_CC #Set Active Identity
-EpiOnly <- subset(EpiOnly, idents=c('EP','LE','GE','CE')) #epithelial clusters only
+EpiOnly <- subset(EpiOnly, idents=c('LE','GE','CE')) #epithelial clusters only
 ncol(EpiOnly) #19449 cells
 
 #Rescale and Recluster
@@ -91,11 +91,11 @@ EpiOnlyUMAP <- DimPlot(object = EpiOnly,                 # Seurat object
 EpiOnlyUMAP
 
 # Save as RDS files
-saveRDS(EpiOnly, file = "./data/allDiestrus_Epi_mU7_mU30_recluster_final_01302024_noLE3.rds")
+saveRDS(EpiOnly, file = "./data/allDiestrus_Epi_mU7_mU30_recluster_final_01182025.rds")
 
 #Sample Analysis####
 #Load Reclustered dataset ####
-EpiOnly = readRDS(file ='./data/allDiestrus_Epi_mU7_mU30_recluster_final_01302024_noLE3.rds',
+EpiOnly = readRDS(file ='./data/allDiestrus_Epi_mU7_mU30_recluster_final_01182025.rds',
                   refhook = NULL)
 ncol(EpiOnly) #19,449 cells
 
@@ -123,20 +123,18 @@ DotSC = DotPlot(EpiOnly, features=SCfeatures, col.min=0, col.max=2.5) +
 DotSC
 
 #Cluster Renaming ####
+#Fine Clustering
 Idents(EpiOnly) <- EpiOnly$seurat_clusters
 
 CellTypeNames <- RenameIdents(EpiOnly, 
-                              '0'= 'LE 1',
-                              '1'= 'Progenitor 1',
-                              '2'= 'Progenitor 2',
+                              '0'= 'LE 2',
+                              '1'= 'LE 1',
+                              '2'= 'DDP',
                               '3'= 'Cycling',
-                              '4'= 'Unidentified',
+                              '4'= 'COX/MAL',
                               '5'= 'GE',
-                              '6'= 'Progenitor 3',
-                              '7'= 'Progenitor 4',
-                              '8'= 'Progenitor 5',
-                              '9'= 'LE 2',
-                              '10'= 'LE 3'
+                              '6'= 'LE 3',
+                              '7'= 'LE 5'
                               
 )
 
@@ -144,8 +142,42 @@ EpiOnly$seurat_clusters2 <- Idents(CellTypeNames)
 
 Idents(EpiOnly) <- EpiOnly$seurat_clusters2
 
-saveRDS(EpiOnly, "./data/allDiestrus_Epi_mU7_mU30_recluster_final_01302024_noLE3.rds")
+#Simple Epi
+Idents(EpiOnly) <- EpiOnly$seurat_clusters
 
+CellTypeNames <- RenameIdents(EpiOnly, 
+                              '0'= 'LE',
+                              '1'= 'LE',
+                              '2'= 'DDP',
+                              '3'= 'Cycling',
+                              '4'= 'COX/MAL',
+                              '5'= 'GE',
+                              '6'= 'LE',
+                              '7'= 'LE'
+                              
+)
+
+EpiOnly$seurat_clusters_SE <- Idents(CellTypeNames)
+
+Idents(EpiOnly) <- EpiOnly$seurat_clusters_SE
+
+#Course Grain
+Idents(EpiOnly) <- EpiOnly$seurat_clusters2
+
+CellTypeNames <- RenameIdents(EpiOnly, 
+                              'LE 1'='LE',
+                              'LE 2'='LE',
+                              'DDP'='DDP',
+                              'Cycling'='CE',
+                              'COX/MAL'='CM',
+                              'GE'='GE',
+                              'LE 3'='LE',
+                              'LE 5'='LE'
+)
+
+EpiOnly$seurat_clusters_CC <- Idents(CellTypeNames)
+
+saveRDS(EpiOnly, "./data/allDiestrus_Epi_mU7_mU30_recluster_final_01182025.rds")
 #UMAP ####
 UMAP = DimPlot(object=EpiOnly, reduction="umap", group.by = "seurat_clusters2",
                repel = FALSE,                     
