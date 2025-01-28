@@ -518,11 +518,11 @@ View(HQ_Cells_DF$TdtExp_profile)
 
 VlnPlot(HQ_Cells_DF, features='Rb1', group.by='Coexpression')
 
-saveRDS(HQ_Cells_DF, file = "./data/DiestrusMice_mU7_mU30_Final_mergedCellID_02122024.rds")
+saveRDS(HQ_Cells_DF, file = "./data/DiestrusMice_mU7_mU30_Final_01182025_simple.rds")
 
 #Sample Analysis####
 #Load RDS File
-IntData = readRDS(file ="./data/DiestrusMice_mU7_mU30_Final_mergedCellID_02122024.rds",  # Filename
+IntData = readRDS(file ="./data/DiestrusMice_mU7_mU30_Final_01182025_simple.rds",  # Filename
                   refhook = NULL)
 ncol(IntData) #37,543 Cells
 
@@ -551,7 +551,7 @@ DotSC = DotPlot(IntData, features=SCfeatures, col.min=0, col.max=2.5) +
   theme(axis.text.x=element_text(angle=90, hjust=1, vjust=0.5, face='italic'))
 DotSC
 
-#Diff Gene Expression - Progenitor Populations
+#Diff Gene Expression - Progenitor-like
 DotPlot(IntData, features=c('Pax2','Hoxb5','Tert','Sox17','Klf5', #nucleus
                             'Nt5e','Lpar3','Lgr4', #membrane
                             'Wfdc2' #Secreted
@@ -580,11 +580,11 @@ ImDot
 Idents(IntData) <- IntData$seurat_clusters
 
 CellTypeNames <- RenameIdents(IntData, 
-                              '0'= 'Epi Progenitor',
+                              '0'= 'LE',
                               '1'= 'Lymph',
                               '2'= 'Fib 1',
-                              '3'= 'Cycling',
-                              '4'= 'LE 1',
+                              '3'= 'Cycling Epi',
+                              '4'= 'LE',
                               '5'= 'Fib 3',
                               '6'= 'Fib 2',
                               '7'= 'Macrophage',
@@ -593,21 +593,43 @@ CellTypeNames <- RenameIdents(IntData,
                               '10'= 'Lymphocyte',
                               '11'= 'Mesothelium',
                               '12'= 'Smooth Muscle',
-                              '13'= 'LE 2'
+                              '13'= 'LE'
 )
 
 IntData$seurat_clusters2 <- Idents(CellTypeNames)
 
 Idents(IntData) <- IntData$seurat_clusters2
 
+#Fine Grain with simple EPI (SE)
+Idents(IntData) <- IntData$seurat_clusters
+
+CellTypeNames <- RenameIdents(IntData, 
+                              '0'= 'Epithelium',
+                              '1'= 'Lymph',
+                              '2'= 'Fib 1',
+                              '3'= 'Epithelium',
+                              '4'= 'Epithelium',
+                              '5'= 'Fib 3',
+                              '6'= 'Fib 2',
+                              '7'= 'Macrophage',
+                              '8'= 'Vascular',
+                              '9'= 'Epithelium',
+                              '10'= 'Lymphocyte',
+                              '11'= 'Mesothelium',
+                              '12'= 'Smooth Muscle',
+                              '13'= 'Epithelium'
+)
+
+IntData$seurat_clusters_SE <- Idents(CellTypeNames)
+
+Idents(IntData) <- IntData$seurat_clusters_SE
+
 #Course Grain
 Idents(IntData) <- IntData$seurat_clusters2
 
 CellTypeNames <- RenameIdents(IntData, 
-                              'Epi Progenitor'='EP',
-                              'LE 1'='LE',
-                              'LE 2'='LE',
-                              'Cycling'='CE',
+                              'LE'='LE',
+                              'Cycling Epi'='CE',
                               'GE'='GE',
                               'Fib 1'='Fib',
                               'Fib 2'='Fib',
@@ -623,14 +645,12 @@ CellTypeNames <- RenameIdents(IntData,
 
 IntData$seurat_clusters_CC <- Idents(CellTypeNames)
 
-#Name by broad cell type - for later CellChat Analysis
+#Name by broad cell type
 Idents(IntData) <- IntData$seurat_clusters2
 
 CellTypeNames <- RenameIdents(IntData, 
-                              'Epi Progenitor'='Epi',
-                              'LE 1'='Epi',
-                              'LE 2'='Epi',
-                              'Cycling'='Epi',
+                              'LE'='Epi',
+                              'Cycling Epi'='Epi',
                               'GE'='Epi',
                               'Fib 1'='Fib',
                               'Fib 2'='Fib',
@@ -645,7 +665,7 @@ CellTypeNames <- RenameIdents(IntData,
 )
 
 IntData$seurat_clusters_cellType <- Idents(CellTypeNames)
-saveRDS(IntData, file ="./data/DiestrusMice_mU7_mU30_Final_mergedCellID_02122024.rds")
+saveRDS(IntData, file ="./data/DiestrusMice_mU7_mU30_Final_01182025_simple.rds")
 
 #UMAP ####
 UMAP = DimPlot(object=IntData, reduction="umap", group.by = "seurat_clusters2", 
