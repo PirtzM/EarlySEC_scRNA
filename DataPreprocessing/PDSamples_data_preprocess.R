@@ -14,13 +14,13 @@ library(patchwork)
 setwd("/workdir/mgp73/Studies/MouseSampleAnalysis/Diestrus_mU7_mU30_fixedDF/scripts")
 
 #Load full object ####
-IntData = readRDS(file ='./data/DiestrusMice_mU7_mU30_Final_mergedCellID_02122024.rds',  # Filename
+IntData = readRDS(file ='./data/DiestrusMice_mU7_mU30_Final_01182025_simple.rds',  # Filename
                   refhook = NULL)
 ncol(IntData) #37543 cells
 
 #Subset by SEC stage and Recluster####
-Idents(IntData) <- IntData$SEC_stage #Set Active Identity
-EarOnly <- subset(IntData, idents=c('earlySEC')) #Pre-dysplastic samples
+Idents(IntData) <- IntData$RedSEC_stage #Set Active Identity
+EarOnly <- subset(IntData, idents=c('Pre-dysplastic')) #Pre-dysplastic samples
 ncol(EarOnly) #17,212 cells
 
 #Rescale and Recluster
@@ -91,11 +91,11 @@ EarOnlyUMAP
 FeaturePlot(EarOnly, features='Epcam')
 
 # Save as RDS files
-saveRDS(EarOnly, file = "./data/EarCan_recluster_mU7_mU30_10282023.rds")
+saveRDS(EarOnly, file = "./data/EarCan_recluster_mU7_mU30_01182025_simple.rds")
 
 #Sample Analysis####
 #Load Status RDS Files ####
-EarOnly = readRDS(file ="./data/EarCan_recluster_mU7_mU30_10282023.rds",  # Filename
+EarOnly = readRDS(file ="./data/EarCan_recluster_mU7_mU30_01182025_simple.rds",  # Filename
                   refhook = NULL)
 ncol(EarOnly) #17,212 cells
 
@@ -147,25 +147,23 @@ ImDot = DotPlot(EarOnly, features=Imfeatures, col.min=0, col.max=2.5) +
   theme(axis.text.x=element_text(angle=90, hjust=1, vjust=0.5, face='italic')) #angle x axis labels
 ImDot
 
-#Cluster Renaming ####
-#Fine Grain
 Idents(EarOnly) <- EarOnly$seurat_clusters
 
 CellTypeNames <- RenameIdents(EarOnly, 
-                              '0'= 'Progenitor-like',
-                              '1'= 'Fib 1',
+                              '0'= 'PD - LE',
+                              '1'= 'PD - Fib 1',
                               '2'= 'Lymph',
-                              '3'= 'mt High',
-                              '4'= 'Fib 3',
-                              '5'= 'Cycling',
+                              '3'= 'COX/MAL Epi',
+                              '4'= 'PD - Fib 3',
+                              '5'= 'Cycling Epi',
                               '6'= 'Macrophage',
-                              '7'= 'Fib 2',
+                              '7'= 'PD - Fib 2',
                               '8'= 'Vascular',
                               '9'= 'Lymphocyte',
                               '10'= 'Mesothelium',
                               '11'= 'GE',
                               '12'= 'Smooth Muscle',
-                              '13'= 'LE',
+                              '13'= 'PD - LE',
                               '14'= 'Vascular'
                               
 )
@@ -174,18 +172,69 @@ EarOnly$seurat_clusters2 <- Idents(CellTypeNames)
 
 Idents(EarOnly) <- EarOnly$seurat_clusters2
 
+#Fine Grain - Simple Epithelium (SE)
+Idents(EarOnly) <- EarOnly$seurat_clusters
+
+CellTypeNames <- RenameIdents(EarOnly, 
+                              '0'= 'Epithelium',
+                              '1'= 'PD - Fib 1',
+                              '2'= 'Lymph',
+                              '3'= 'Epithelium',
+                              '4'= 'PD - Fib 3',
+                              '5'= 'Epithelium',
+                              '6'= 'Macrophage',
+                              '7'= 'PD - Fib 2',
+                              '8'= 'Vascular',
+                              '9'= 'Lymphocyte',
+                              '10'= 'Mesothelium',
+                              '11'= 'Epithelium',
+                              '12'= 'Smooth Muscle',
+                              '13'= 'Epithelium',
+                              '14'= 'Vascular'
+                              
+)
+
+EarOnly$seurat_clusters_SE <- Idents(CellTypeNames)
+
+Idents(EarOnly) <- EarOnly$seurat_clusters_SE
+
+#Fine Grain - for bar chart (BC)
+Idents(EarOnly) <- EarOnly$seurat_clusters
+
+CellTypeNames <- RenameIdents(EarOnly, 
+                              '0'= 'Epithelium',
+                              '1'= 'Fib 1',
+                              '2'= 'Lymph',
+                              '3'= 'Epithelium',
+                              '4'= 'Fib 3',
+                              '5'= 'Epithelium',
+                              '6'= 'Macrophage',
+                              '7'= 'Fib 2',
+                              '8'= 'Vascular',
+                              '9'= 'Lymphocyte',
+                              '10'= 'Mesothelium',
+                              '11'= 'Epithelium',
+                              '12'= 'Smooth Muscle',
+                              '13'= 'Epithelium',
+                              '14'= 'Vascular'
+                              
+)
+
+EarOnly$seurat_clusters_BC <- Idents(CellTypeNames)
+
+Idents(EarOnly) <- EarOnly$seurat_clusters_BC
+
 #Course Grain
 Idents(EarOnly) <- EarOnly$seurat_clusters2
 
 CellTypeNames <- RenameIdents(EarOnly, 
-                              'Progenitor-like'='EP',
-                              'mt High'='UE',
-                              'LE'='LE',
-                              'Cycling'='CE',
+                              'COX/MAL Epi'='COX/MAL',
+                              'PD - LE'='LE',
+                              'Cycling Epi'='CE',
                               'GE'='GE',
-                              'Fib 1'='Fib',
-                              'Fib 2'='Fib',
-                              'Fib 3'='Fib',
+                              'PD - Fib 1'='Fib',
+                              'PD - Fib 2'='Fib',
+                              'PD - Fib 3'='Fib',
                               'Mesothelium'='Meso',
                               'Lymph'='LV',
                               'Vascular'='BV',
@@ -196,7 +245,30 @@ CellTypeNames <- RenameIdents(EarOnly,
 )
 
 EarOnly$seurat_clusters_CC <- Idents(CellTypeNames)
-saveRDS(EarOnly, "./data/EarCan_recluster_mU7_mU30_10282023.rds")
+
+
+#Name by broad cell type
+Idents(EarOnly) <- EarOnly$seurat_clusters2
+
+CellTypeNames <- RenameIdents(EarOnly, 
+                              'COX/MAL Epi'='Epi',
+                              'PD - LE'='Epi',
+                              'Cycling Epi'='Epi',
+                              'GE'='Epi',
+                              'PD - Fib 1'='Fib',
+                              'PD - Fib 2'='Fib',
+                              'PD - Fib 3'='Fib',
+                              'Mesothelium'='Meso',
+                              'Lymph'='LV',
+                              'Vascular'='BV',
+                              'Macrophage'='Im',
+                              'Lymphocyte'='Im',
+                              'Smooth Muscle'='SM'
+                              
+)
+
+EarOnly$seurat_clusters_cellType <- Idents(CellTypeNames)
+saveRDS(EarOnly, "./data/EarCan_recluster_mU7_mU30_01182025_simple.rds")
 
 #UMAP ####
 UMAP = DimPlot(object=EarOnly, reduction="umap", group.by='seurat_clusters2',
