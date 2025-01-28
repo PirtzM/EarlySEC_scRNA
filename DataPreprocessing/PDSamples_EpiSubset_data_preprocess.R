@@ -16,12 +16,12 @@ library(tidyr)
 setwd("/workdir/mgp73/Studies/MouseSampleAnalysis/Diestrus_mU7_mU30_fixedDF/scripts")
 
 #Load Pre-dysplastic Subset####
-EpiOnly <- readRDS(file = "./data/EarCan_recluster_mU7_mU30_10282023.rds",  # Filename
+EpiOnly <- readRDS(file = "./data/EarCan_recluster_mU7_mU30_01182025_simple.rds",  # Filename
                    refhook = NULL)
 ncol(EpiOnly) #17,212 cells
 
 Idents(EpiOnly) <- EpiOnly$seurat_clusters_CC #Set Active Identity
-EpiOnly <- subset(EpiOnly, idents=c('EP','LE','GE','UE','CE')) #epithelial clusters only
+EpiOnly <- subset(EpiOnly, idents=c('LE','GE','COX/MAL','CE')) #epithelial clusters only
 ncol(EpiOnly) #7,713 cells
 
 #Rescale and Recluster
@@ -91,11 +91,11 @@ EpiOnlyUMAP <- DimPlot(object = EpiOnly,                 # Seurat object
 EpiOnlyUMAP
 
 # Save as RDS files
-saveRDS(EpiOnly, file = "./data/Ear_Epi_mU7_mU30_recluster_11212023_withUECE.rds")
+saveRDS(EpiOnly, file = "./data/Ear_Epi_mU7_mU30_recluster_01182025.rds")
 
 #Sample Analysis####
 #Load Reclustered dataset ####
-EpiOnly = readRDS(file ="./data/Ear_Epi_mU7_mU30_recluster_11212023_withUECE.rds",  # Filename
+EpiOnly = readRDS(file ="./data/Ear_Epi_mU7_mU30_recluster_01182025.rds",  # Filename
                   refhook = NULL)
 ncol(EpiOnly) #7713 cells
 
@@ -126,42 +126,60 @@ DotSC
 
 #Cluster Renaming ####
 #Fine Clusters
-Idents(EpiOnly) <- EpiOnly$seurat_clusters
+Idents(EarEpi) <- EarEpi$seurat_clusters
 
-CellTypeNames <- RenameIdents(EpiOnly, 
-                              '0'= 'LE 1',
-                              '1'= 'Progenitor 1', #referred to as 'Progenitor-like 1' in manuscript
-                              '2'= 'Unidentified', #referred to as 'mt High' in manuscript
+CellTypeNames <- RenameIdents(EarEpi, 
+                              '0'= 'PD - LE 2', 
+                              '1'= 'PD - LE 1', 
+                              '2'= 'COX/MAL', 
                               '3'= 'Cycling',
-                              '4'= 'Epithelial - Foxj1+',
-                              '5'= 'Progenitor 2', #referred to as 'Progenitor-like 2' in manuscript
+                              '4'= 'DDP', 
+                              '5'= 'PD - LE 3', 
                               '6'= 'GE',
-                              '7'= 'LE 2'
+                              '7'= 'PD - LE 4'
 )
 
-EpiOnly$seurat_clusters2 <- Idents(CellTypeNames)
+EarEpi$seurat_clusters2 <- Idents(CellTypeNames)
 
-Idents(EpiOnly) <- EpiOnly$seurat_clusters2
+Idents(EarEpi) <- EarEpi$seurat_clusters2
+
+#Fine Clusters - Simplified
+Idents(EarEpi) <- EarEpi$seurat_clusters
+
+CellTypeNames <- RenameIdents(EarEpi, 
+                              '0'= 'LE 2',
+                              '1'= 'LE 1',
+                              '2'= 'COX/MAL', 
+                              '3'= 'Cycling',
+                              '4'= 'DDP',
+                              '5'= 'LE 3',
+                              '6'= 'GE',
+                              '7'= 'LE 4'
+)
+
+EarEpi$seurat_clusters_SE <- Idents(CellTypeNames)
+
+Idents(EarEpi) <- EarEpi$seurat_clusters_SE
 
 #Coarse Clusters
-Idents(EpiOnly) <- EpiOnly$seurat_clusters2
+Idents(EarEpi) <- EarEpi$seurat_clusters2
 
-CellTypeNames <- RenameIdents(EpiOnly, 
-                              'LE 1'= 'LE',
-                              'Progenitor 1'= 'EP', #referred to as 'Progenitor-like 1' in manuscript
-                              'Unidentified'= 'UE', #referred to as 'mt High' in manuscript
+CellTypeNames <- RenameIdents(EarEpi, 
+                              'PD - LE 1'= 'LE',
+                              'PD - LE 2'= 'LE',
+                              'COX/MAL'= 'CM', 
                               'Cycling'= 'CE',
-                              'Epithelial - Foxj1+'= 'Foxj1+',
-                              'Progenitor 2'= 'EP', #referred to as 'Progenitor-like 2' in manuscript
+                              'DDP'= 'DDP',
+                              'PD - LE 3'= 'LE',
                               'GE'= 'GE',
-                              'LE 2'= 'LE'
+                              'PD - LE 4'= 'LE'
 )
 
-EpiOnly$seurat_clusters_CC <- Idents(CellTypeNames)
+EarEpi$seurat_clusters_CC <- Idents(CellTypeNames)
 
-Idents(EpiOnly) <- EpiOnly$seurat_clusters_CC
+Idents(EarEpi) <- EarEpi$seurat_clusters_CC
 
-saveRDS(EpiOnly, "./data/Ear_Epi_mU7_mU30_recluster_11212023_withUECE.rds")
+saveRDS(EarEpi, "./data/Ear_Epi_mU7_mU30_recluster_01182025.rds")
 
 #UMAP ####
 UMAP = DimPlot(object=EpiOnly, reduction="umap", group.by = "seurat_clusters2",
