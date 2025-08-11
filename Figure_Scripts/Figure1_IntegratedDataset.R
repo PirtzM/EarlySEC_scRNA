@@ -22,8 +22,8 @@ mycols=c('Epithelium'='#507ECF',
          'Smooth Muscle'='#FA78FA',
          'Lymph'='#FAA000',
          'Vascular'='#940A1D',
-         'Macrophage'='#B84B84',#F88379'
-         'Lymphocyte'='#709EB5'#ffb6c1'
+         'Macrophage'='#B84B84',
+         'Lymphocyte'='#709EB5'
 )
 
 #SEC stage coded UMAP and bar chart
