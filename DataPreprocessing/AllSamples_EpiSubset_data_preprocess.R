@@ -16,12 +16,12 @@ library(tidyr)
 setwd("/workdir/mgp73/Studies/MouseSampleAnalysis/Diestrus_mU7_mU30_fixedDF/scripts")
 
 #Load full dataset####
-EpiOnly <- readRDS(file = "./data/DiestrusMice_mU7_mU30_Final_01182025.rds",  # Filename
+EpiOnly <- readRDS(file = "./data/DiestrusMice_mU7_mU30_Final_01182025_simple.rds",  # Filename
                    refhook = NULL)
 ncol(EpiOnly) #37543 cells
 
-Idents(EpiOnly) <- EpiOnly$seurat_clusters_CC #Set Active Identity
-EpiOnly <- subset(EpiOnly, idents=c('LE','GE','CE')) #epithelial clusters only
+Idents(EpiOnly) <- EpiOnly$seurat_clusters_SE #Set Active Identity
+EpiOnly <- subset(EpiOnly, idents=c('Epithelium')) #epithelial clusters only
 ncol(EpiOnly) #19449 cells
 
 #Rescale and Recluster
@@ -178,6 +178,7 @@ CellTypeNames <- RenameIdents(EpiOnly,
 EpiOnly$seurat_clusters_CC <- Idents(CellTypeNames)
 
 saveRDS(EpiOnly, "./data/allDiestrus_Epi_mU7_mU30_recluster_final_01182025.rds")
+
 #UMAP ####
 UMAP = DimPlot(object=EpiOnly, reduction="umap", group.by = "seurat_clusters2",
                repel = FALSE,                     
