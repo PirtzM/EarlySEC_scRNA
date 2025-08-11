@@ -23,7 +23,8 @@ clusterord_int_SE= c('Epithelium',
                   'Mesothelium','Fib 1','Fib 2','Fib 3',
                   'Smooth Muscle','Lymph','Vascular', 'Macrophage','Lymphocyte')
 
-#Gene list ####
+#Supp Fig. 3 - Identification of all cell types in the integrated dataset ####
+#Gene list
 AllFeatures_STR = c('TdTomato-UTR','Epcam','Pax8','Tacstd2','Foxa2',
                     'Msln','Lrrn4','Upk3b', #meso
                     'Pdgfra', #general Fib
