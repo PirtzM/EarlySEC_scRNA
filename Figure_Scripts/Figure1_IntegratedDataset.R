@@ -1,6 +1,6 @@
 ################################################################################
-#################Figure 1 - Integrated Dataset, full composition################
-################################################################################
+#################################Figure 1#######################################
+#################Census of All Cell types in the mouse uterus###################
 
 #R v4.1.1
 #Load Libraries
@@ -13,7 +13,8 @@ library(patchwork)
 #Set working directory
 setwd("/workdir/mgp73/Studies/MouseSampleAnalysis/Diestrus_mU7_mU30_fixedDF/scripts")
 
-#Load color palettes
+# Load color palettes ####
+#Cell type coded UMAP
 mycols=c('Epithelium'='#507ECF',
          'Fib 1'='#5CAF23',
          'Fib 2'='#065B65',
@@ -25,22 +26,24 @@ mycols=c('Epithelium'='#507ECF',
          'Macrophage'='#B84B84',#F88379'
          'Lymphocyte'='#709EB5'#ffb6c1'
 )
+
+#SEC stage coded UMAP and bar chart
 SECcols=c('control'='#031273',
           'earlySEC'='#EDCD44',
           'lateSEC'='#DC3E26')
 
-#Cell type orders
+# Cell type orders ####
+#Bar chart
 clusterord_int_SE= c('Epithelium',
                      'Mesothelium','Fib 1','Fib 2','Fib 3',
                      'Smooth Muscle','Lymph','Vascular', 'Macrophage','Lymphocyte')
 
-####Load All Sample Dataset####
+#Load All Sample Dataset ####
 IntData = readRDS(file ="./data/DiestrusMice_mU7_mU30_Final_mergedCellID_02122024.rds",  # Filename
                   refhook = NULL)
 ncol(IntData) #37,543 
 
-#### Figures ####
-#Fig. 1C
+#Figure 1C - Integrated dataset, all cells coded by cell type UMAP ####
 UMAP = DimPlot(object=IntData, reduction="umap", group.by = "seurat_clusters_SE",
                repel = TRUE,                    
                label = FALSE,
@@ -50,9 +53,9 @@ UMAP = DimPlot(object=IntData, reduction="umap", group.by = "seurat_clusters_SE"
                shuffle=TRUE
 )
 UMAP
-ggsave('./plots/FinalSamples/UMAP_IntData_simpleEpi_clusters_06262025.pdf', UMAP, device='pdf', width=6, height=4, units='in', dpi=300)
+ggsave('./plots/FinalSamples/UMAP_IntData_simpleEpi_clusters_06262025.pdf', last_plot(), device='pdf', width=6, height=4, units='in', dpi=300)
 
-#Fig. 1D
+#Figure 1D - Integrated dataset, all cells coded by SEC stage UMAP ####
 UMAP = DimPlot(object=IntData, reduction="umap", group.by = "RedSEC_stage",
                repel = TRUE,                   
                label = FALSE,
@@ -62,10 +65,10 @@ UMAP = DimPlot(object=IntData, reduction="umap", group.by = "RedSEC_stage",
                shuffle=TRUE
 )
 UMAP
-ggsave('./plots/UMAP_SECintegration.pdf', UMAP, device='pdf', width=6, height=4, units='in',dpi=300)
+ggsave('./plots/UMAP_SECintegration.pdf', last_plot(), device='pdf', width=6, height=4, units='in',dpi=300)
 
-#Fig. 1E
-#Frequency of Stage wihtin each SE cluster
+#Figure 1E - Integrated dataset, composition of each cell type by SEC stage bar chart ####
+#Frequency of Stage within each SE cluster
 IntTab <- table(IntData$RedSEC_stage)
 IntTab
 IntTab<-table(IntData$RedSEC_stage, IntData$seurat_clusters_SE)
@@ -113,4 +116,4 @@ plot <- ggplot(data = NewTab,            # Dataset to use for plot.  Needs to be
   scale_fill_manual(values=SECcols)
 plot # View plot
 
-ggsave('./plots/FinalSamples/IntData_AllcombBar_allcells.pdf', plot, device='pdf', width=6, height=8, units='in', dpi=300)
+ggsave('./plots/FinalSamples/IntData_AllcombBar_allcells.pdf', last_plot(), device='pdf', width=6, height=8, units='in', dpi=300)
