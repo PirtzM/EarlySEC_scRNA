@@ -130,7 +130,7 @@ UMAP_N
 
 ggsave('./plots/D_EPI_UMAP_clusters.pdf', last_plot(), device='pdf', dpi=300)
 
-#Figure 3D - Epithelial Cell Type quantification across SEC progression####
+#Figure 2D - Epithelial Cell Type quantification across SEC progression####
 #Create Frequency Tables per object ####
 #Frequency of Stage by CC cluster - all clusters
 ContTab <- table(ContOnly$RedSEC_stage)
@@ -190,7 +190,7 @@ plot # View plot
 
 ggsave('./plots/FinalSamples/AllStage_combBar_norm_SECstage_SE.pdf', last_plot(), device='pdf', width=6, height=8, units='in', dpi=300)
 
-#Figure 3E - Epithelial Cell expression profile DotPlots (final combining of plots in Adobe Illustrator)####
+#Figure 2E - Epithelial Cell expression profile DotPlots (final combining of plots in Adobe Illustrator)####
 #Gene list
 MiniFeatures_org = c('TdTomato-UTR', #General Epithelium
                     'Ly6a',
