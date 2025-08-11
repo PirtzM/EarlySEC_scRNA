@@ -1,0 +1,81 @@
+################################################################################
+#################################Supp Fig. 11###################################
+###############Expression of Signature related genes by SEC stage###############
+################################################################################
+
+#R v4.1.1
+#Load Libraries
+library(Seurat)
+library(ggplot2)
+library(patchwork)
+library(dplyr)
+library(viridis)
+
+#Set working directory
+setwd("/workdir/mgp73/Studies/MouseSampleAnalysis/Diestrus_mU7_mU30_fixedDF/scripts")
+
+#Load datasets ####
+#Normal samples, n=5
+ContEpi = readRDS(file ="./data/FinalSamples/cont_Epi_mU7_mU30_Final_01182025.rds",  
+                   refhook = NULL)
+ncol(ContEpi) #4,689 cells
+Idents(ContEpi) <- ContEpi$seurat_clusters2 #Set Active Identity
+
+#Pre-dysplastic samples, n=7
+EarEpi = readRDS(file ="./data/Ear_Epi_mU7_mU30_recluster_01182025.rds",
+                  refhook = NULL)
+ncol(EarEpi) #7,713 cells
+Idents(EarEpi) <- EarEpi$seurat_clusters2 #Set Active Identity
+
+#Dysplastic samples, n=6
+LEpi = readRDS(file ="./data/Late_Epi_mU7_mU30_recluster_01182025.rds",  # Filename
+                refhook = NULL)
+ncol(LEpi) #7,063 cells
+Idents(LEpi) <- LEpi$seurat_clusters2 #Set Active Identity
+
+#Plotting variable order ####
+clusterord_cont= c('N - LE 1','N - LE 2',
+                   'N - LE 3','GE',
+                   'DDP','Cycling','COX/MAL') #Normal sample epithelial cell type order
+
+clusterord_ear= c('PD - LE 1','PD - LE 2',
+                  'PD - LE 3','PD - LE 4', 'GE', 
+                  'DDP','Cycling','COX/MAL') #Pre-dysplastic sample epithelial cell type order
+
+clusterord_L= c('D - LE 1','D - LE 2','D - LE 3',
+                'D - LE 4','D - LE 5','GE',
+                'Cycling', 'COX/MAL') #Dysplastic sample epithelial cell type order
+
+#Supp. Fig 11 - Epithelial SEC stage-specific expression profile of signature related gene DotPlots (All final merging of plots were done in Adobe Illustrator####
+#Normal DotPlot
+Sig <- DotPlot(ContEpi, features=rev(c('Add2','Cdkn2a','Ckmt1','Epsti1','Oasl2','Pim1')), col.min=0, col.max=2.5) +
+  scale_color_viridis(option = 'A', begin=0.9, end=0, limits=c(0,2.1)) + #change to magma color scale
+  theme(axis.text.y=element_text(vjust=0.5, face='italic'))+
+  theme(axis.text.x=element_text(angle=90, hjust=1, vjust=0.5))+
+  scale_y_discrete(limits=clusterord_cont)+
+  coord_flip()
+Sig
+
+ggsave('./plots/FinalSamples/DotPlot_EpiOnly_Control_clusters_GeneSig_01182025.pdf', last_plot(), device='pdf',width=6, height=8,units='in', dpi=300)
+
+#Pre-dysplastic DotPlot
+Sig <- DotPlot(EarEpi, features=rev(c('Add2','Cdkn2a','Ckmt1','Epsti1','Oasl2','Pim1')), col.min=0, col.max=2.5) +
+  scale_color_viridis(option = 'A', begin=0.9, end=0, limits=c(0,2.1)) + #change to magma color scale
+  theme(axis.text.y=element_text(vjust=0.5, face='italic'))+
+  theme(axis.text.x=element_text(angle=90, hjust=1, vjust=0.5))+
+  scale_y_discrete(limits=clusterord_ear)+
+  coord_flip()
+Sig
+
+ggsave('./plots/FinalSamples/DotPlot_EpiOnly_early_clusters_GeneSig_01182025.pdf', last_plot(), device='pdf',width=6, height=8,units='in', dpi=300)
+
+#Dysplastic DotPlot
+Sig <- DotPlot(LEpi, features=rev(c('Add2','Cdkn2a','Ckmt1','Epsti1','Oasl2','Pim1')), col.min=0, col.max=2.5) +
+  scale_color_viridis(option = 'A', begin=0.9, end=0, limits=c(0,2.1)) + #change to magma color scale
+  theme(axis.text.y=element_text(vjust=0.5, face='italic'))+
+  theme(axis.text.x=element_text(angle=90, hjust=1, vjust=0.5))+
+  scale_y_discrete(limits=clusterord_L)+
+  coord_flip()
+Sig
+
+ggsave('./plots/FinalSamples/DotPlot_EpiOnly_late_clusters_GeneSig_01182025.pdf', last_plot(), device='pdf',width=6, height=8,units='in', dpi=300)
