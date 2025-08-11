@@ -8,11 +8,13 @@
 library(Seurat)
 library(ggplot2)
 library(patchwork)
+library(dplyr)
+library(viridis)
 
 #Set working directory
 setwd("/workdir/mgp73/Studies/MouseSampleAnalysis/Diestrus_mU7_mU30_fixedDF/scripts")
 
-####Load each SEC stage Epithelial Subsets####
+#Load each SEC stage Epithelial Subsets ####
 #Normal samples, n=5
 ContEpi = readRDS(file ="./data/FinalSamples/cont_Epi_mU7_mU30_Final_01182025.rds",  
                    refhook = NULL)
@@ -36,107 +38,121 @@ Idents(LEpi) <- LEpi$seurat_clusters2 #Set Active Identity
 #Normal Samples
 mycols_ContEpi=c('N - LE 1'='#066DD4',
                  'N - LE 2'='#54F2E3',
-                'N - LE 3'='#5dcdad',
-                'GE'='#8F03C8',
-                'Cycling'='#E86DE3',
-                'COX/MAL'='#5BB40B',
-                'DDP'='#9f2b68'
+                 'N - LE 3'='#5dcdad',
+                 'GE'='#8F03C8',
+                 'Cycling'='#E86DE3',
+                 'COX/MAL'='#5BB40B',
+                 'DDP'='#9f2b68'
 )
 
 #Pre-dysplastic Samples
 mycols_EarEpi=c('PD - LE 1'='#066DD4',
                 'PD - LE 2'='#54F2E3',
                 'PD - LE 3'='#5dcdad',
-         'PD - LE 4'='#F4877F', 
-         'GE'='#8F03C8',
-         'Cycling'='#E86DE3',
-         'COX/MAL'='#5BB40B',
-         'DDP'='#9f2b68'
+                'PD - LE 4'='#F4877F', 
+                'GE'='#8F03C8',
+                'Cycling'='#E86DE3',
+                'COX/MAL'='#5BB40B',
+                'DDP'='#9f2b68'
 )
 
 #Dysplastic Samples
 mycols_Lepi=c('D - LE 1'='#066DD4',
               'D - LE 2'='#54F2E3',
               'D - LE 3'='#5dcdad',
-         'D - LE 4'='#F4877F',
-         'D - LE 5'='#E3242B',
-         'GE'='#8F03C8',
-         'Cycling'='#E86DE3',
-         'COX/MAL'='#5BB40B',
-         'DDP'='#9f2b68'
+              'D - LE 4'='#F4877F',
+              'D - LE 5'='#E3242B',
+              'GE'='#8F03C8',
+              'Cycling'='#E86DE3',
+              'COX/MAL'='#5BB40B',
+              'DDP'='#9f2b68'
 )
 
-#Bar Chart
-CCmycols=c('LE'='#2b7b7b',
-           'EP'='#85b7b6',
-           'GE'='#34535e',
-           'CE'='#08314a',
-           'UE'='#8f9779',
-           'Foxj1+'='#9f2b68')
+#SEC stage coded bar chart
+SECcols=c('control'='#031273',
+          'earlySEC'='#EDCD44',
+          'lateSEC'='#DC3E26')
 
-####Figure 3A - Normal Sample Epithelial Subset UMAP ####
+#Plotting variables order ####
+#Bar chart
+clusterord_group= c('LE 1','LE 2','LE 3',
+                'LE 4','LE 5','GE','DDP',
+                'Cycling', 'COX/MAL')
+
+#Normal DotPlot
+clusterord_cont= c('N - LE 1','N - LE 2',
+                   'N - LE 3','GE',
+                   'DDP','Cycling','COX/MAL')
+
+#Pre-dysplastic DotPlot
+clusterord_ear= c('PD - LE 1','PD - LE 2',
+                  'PD - LE 3','PD - LE 4','GE', 
+                  'DDP','Cycling','COX/MAL')
+
+#Dysplastic DotPlot
+clusterord_L= c('D - LE 1','D - LE 2','D - LE 3',
+                'D - LE 4','D - LE 5','GE',
+                'Cycling', 'COX/MAL')
+
+#Figure 2A - Normal Sample Epithelial Subset UMAP ####
 UMAP_N = DimPlot(object=ContEpi, reduction="umap", group.by = "seurat_clusters2", 
                repel = FALSE,                     
                label =FALSE,
                pt.size = 0.75,                    
                label.size = 4,
-               cols=mycols
+               cols=mycols_ContEpi
 )+ NoLegend()
 UMAP_N
 
 ggsave('./plots/N_EPI_UMAP_clusters.pdf', last_plot(), device='pdf', dpi=300)
 
-####Figure 3B - Pre-dysplastic Sample Epithelial Subset UMAP ####
+#Figure 2B - Pre-dysplastic Sample Epithelial Subset UMAP ####
 UMAP_PD = DimPlot(object=EarEpi, reduction="umap", group.by = "seurat_clusters2", 
                  repel = FALSE,                     
                  label =FALSE,
                  pt.size = 0.75,                    
                  label.size = 4,
-                 cols=mycols
+                 cols=mycols_EarEpi
 )+ NoLegend()
 UMAP_PD
 
 ggsave('./plots/PD_EPI_UMAP_clusters.pdf', last_plot(), device='pdf', dpi=300)
 
-####Figure 3C - Dysplastic Sample Epithelial Subset UMAP ####
+#Figure 2C - Dysplastic Sample Epithelial Subset UMAP ####
 UMAP_D = DimPlot(object=LEpi, reduction="umap", group.by = "seurat_clusters2", 
                  repel = FALSE,                     
                  label =FALSE,
                  pt.size = 0.75,                    
                  label.size = 4,
-                 cols=mycols
+                 cols=mycols_LEpi
 )+ NoLegend()
 UMAP_N
 
 ggsave('./plots/D_EPI_UMAP_clusters.pdf', last_plot(), device='pdf', dpi=300)
 
-####Figure 3D - Epithelial Cell Type quantification across SEC progression####
-#Frequency of Stage by CC cluster - Epi Clusters
-#Normal Samples
-ContTab <- table(ContEpi$RedSEC_stage)
+#Figure 3D - Epithelial Cell Type quantification across SEC progression####
+#Create Frequency Tables per object ####
+#Frequency of Stage by CC cluster - all clusters
+ContTab <- table(ContOnly$RedSEC_stage)
 ContTab
-ContTab<-table(ContEpi$RedSEC_stage, ContEpi$seurat_clusters_CC)
+ContTab<-table(ContOnly$RedSEC_stage, ContOnly$seurat_clusters_BC)
 ContTab
 
-#Pre-dysplastic Samples
-EarTab <- table(EarEpi$RedSEC_stage)
+EarTab <- table(EarOnly$RedSEC_stage)
 EarTab
-EarTab<-table(EarEpi$RedSEC_stage, EarEpi$seurat_clusters_CC)
+EarTab<-table(EarOnly$RedSEC_stage, EarOnly$seurat_clusters_BC)
 EarTab
 
-#Dysplastic Samples
-LTab <- table(LEpi$RedSEC_stage)
+LTab <- table(LOnly$RedSEC_stage)
 LTab
-LTab<-table(LEpi$RedSEC_stage, LEpi$seurat_clusters_CC)
+LTab<-table(LOnly$RedSEC_stage, LOnly$seurat_clusters_BC)
 LTab
 
-#Merge all tables
-AllTab <- merge(ContTab, EarTab, all=T)
-AllTab <- merge(AllTab, LTab, all=T)
+AllTab <- merge(ContTab, EarTab, all=TRUE)
+AllTab <- merge(AllTab, LTab, all=TRUE)
 
-#Calculate cell type frequencies
 Freq<-data.frame(AllTab)
-Freq.list<-split(Freq, AllTab$Var1)
+Freq.list<-split(Freq, Freq$Var1)
 
 #Divide by total cells per condition
 for(i in 1:length(Freq.list)) {
@@ -146,33 +162,81 @@ for(i in 1:length(Freq.list)) {
 #Combine, must have same column titles
 NewTab<-data.table::rbindlist(Freq.list, use.names=TRUE)
 NewTab
-NewTab <- filter(NewTab, Freq>0)
+
+write.csv(NewTab, './data/FinalSamples/SupportingData_paper1/AllStageCombo_frequency_SECstage_01182025.csv')
 
 #Stacked Bar Plot
-NewTab$Var2 <- factor(x=NewTab$Var2, levels=c('EP','LE','GE','Foxj1+','CE','UE' #reorder cell types
-))
+NewTab$Var2 <- factor(x=NewTab$Var2, levels=c(clusterord_group))
 
 plot <- ggplot(data = NewTab,            # Dataset to use for plot.  Needs to be a data.frame      
-               aes(x = Var1,    # Variable to plot on the x-axis
+               aes(x = Var2,    # Variable to plot on the x-axis
                    y = FractionCells,   # Variable to plot on the y-axis
-                   fill = Var2  # Variable to fill the bars   
+                   fill = Var1  # Variable to fill the bars   
                )) +
-  theme_classic() +                  # There are various plot themes you can choose from (https://ggplot2.tidyverse.org/reference/ggtheme.html)
+  theme_classic() +               
   # Bar plot
-  geom_bar(position ='fill',       # Position of bars.  Dodge means the bars are next to each other.
-           stat = 'identity'        # Height of bars represent values in the data
-  )  +                           # Name of plot you want to add customizations to
+  geom_bar(position = 'fill',       
+           stat = 'identity',       
+          size = 2)  +                           # Name of plot you want to add customizations to
   labs(x = "Cell Type",                 # x-axis label
-       y = "Fraction of Epithelial Cells") +
+       y = "Fraction of Cells") +
   # Size of bars
-  theme(text = element_text(size = 30),                                        # Text size throughout the plot
+  theme(text = element_text(size = 15),                                        # Text size throughout the plot
         axis.text.x = element_text(color = 'black', angle = 45, hjust = 1),    # Text color, angle, and horizontal adjustment on x-axis
         axis.text.y = element_text(color = 'black', hjust = 1),                # Text color and horizontal adjustment on y-axis
-        legend.position = "right")+
-  scale_fill_manual(values=CCmycols)+
-  scale_x_discrete(limits = c('control','earlySEC','lateSEC' #(Normal, Pre-dysplastic, Dysplastic)
-  ))
+       legend.position = "none")+
+  scale_fill_manual(values=SECcols))
 plot # View plot
 
-ggsave('./plots/AllStage_EPIcombBar_final.pdf', plot, device='pdf', width=6, height=8, units='in', dpi=300)
+ggsave('./plots/FinalSamples/AllStage_combBar_norm_SECstage_SE.pdf', last_plot(), device='pdf', width=6, height=8, units='in', dpi=300)
+
+#Figure 3E - Epithelial Cell expression profile DotPlots (final combining of plots in Adobe Illustrator)####
+#Gene list
+MiniFeatures_org = c('TdTomato-UTR', #General Epithelium
+                    'Ly6a',
+                    'Tacstd2','Met',
+                    'Lrig1','Hoxb5',
+                    'Krt13',
+                    'Itga6','Sox17',
+                    'Foxa2','Msx1','Prom1',
+                    'Dnah12',
+                    'Mki67',
+                    'COX1','Malat1'
+)
+
+#Normal DotPlot
+mini_EPI <- DotPlot(ContEpi, features=MiniFeatures_org, col.min=0, col.max=2.5, scale.min=0
+) +
+  scale_color_viridis(option = 'A', begin=0.9, end=0, limits=c(0,2.5))+ #change to magma color scale
+  theme(axis.text.y=element_text(vjust=0.5, face='italic'))+
+  theme(axis.text.x=element_text(angle=90, hjust=1, vjust=0.5))+
+  scale_y_discrete(limits=clusterord_cont)+
+  coord_flip()
+mini_EPI
+
+ggsave('./plots/FinalSamples/DotPlot_EpiOnly_Control_clusters_06262025.pdf', last_plot(), device='pdf',width=6, height=6,units='in', dpi=300)
+
+#Pre-dysplastic DotPlot
+mini_EPI <- DotPlot(EarEpi, features=MiniFeatures_org, col.min=0, col.max=2.5,scale.min=0
+) +
+  scale_color_viridis(option = 'A', begin=0.9, end=0, limits=c(0,2.5))+ #change to magma color scale
+  theme(axis.text.y=element_text(vjust=0.5, face='italic'))+
+  theme(axis.text.x=element_text(angle=90, hjust=1, vjust=0.5))+
+  scale_y_discrete(limits=clusterord_ear)+
+  coord_flip()
+mini_EPI
+
+ggsave('./plots/FinalSamples/DotPlot_EpiOnly_Early_clusters_06262025.pdf', last_plot(), device='pdf',width=6, height=6,units='in', dpi=300)
+
+#Dysplastic DotPlot
+mini_EPI <- DotPlot(LEpi, features=MiniFeatures_org, col.min=0, col.max=2.5, scale.min=0scale.max=80 
+) +
+  scale_color_viridis(option = 'A', begin=0.9, end=0, limits=c(0,2.5))+ #change to magma color scale
+  theme(axis.text.y=element_text(vjust=0.5, face='italic'))+
+  theme(axis.text.x=element_text(angle=90, hjust=1, vjust=0.5))+
+  scale_y_discrete(limits=clusterord_L)+
+  coord_flip()
+mini_EPI
+
+ggsave('./plots/FinalSamples/DotPlot_EpiOnly_Late_clusters_06262025.pdf', last_plot(), device='pdf',width=6, height=6,units='in', dpi=300)
 
