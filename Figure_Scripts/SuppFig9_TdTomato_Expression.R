@@ -14,20 +14,42 @@ library(patchwork)
 #Set working directory
 setwd("/workdir/mgp73/Studies/MouseSampleAnalysis/Diestrus_mU7_mU30_fixedDF/scripts")
 
+#Normal samples, n=5
+ContEpi = readRDS(file ="./data/FinalSamples/cont_Epi_mU7_mU30_Final_01182025.rds",  
+                   refhook = NULL)
+ncol(ContEpi) #4,689 cells
+Idents(ContEpi) <- ContEpi$seurat_clusters2 #Set Active Identity
+
+#Pre-dysplastic samples, n=7
+EarEpi = readRDS(file ="./data/Ear_Epi_mU7_mU30_recluster_01182025.rds",
+                  refhook = NULL)
+ncol(EarEpi) #7,713 cells
+Idents(EarEpi) <- EarEpi$seurat_clusters2 #Set Active Identity
+
+#Dysplastic samples, n=6
+LEpi = readRDS(file ="./data/Late_Epi_mU7_mU30_recluster_01182025.rds",  # Filename
+                refhook = NULL)
+ncol(LEpi) #7,063 cells
+Idents(LEpi) <- LEpi$seurat_clusters2 #Set Active Identity
+
+#Plotting variable order ####
+clusterord_cont= c('N - LE 1','N - LE 2',
+                   'N - LE 3','GE',
+                   'DDP','Cycling','COX/MAL') #Normal sample epithelial cell type order
+
+clusterord_ear= c('PD - LE 1','PD - LE 2',
+                  'PD - LE 3','PD - LE 4', 'GE', 
+                  'DDP','Cycling','COX/MAL') #Pre-dysplastic sample epithelial cell type order
+
+clusterord_L= c('D - LE 1','D - LE 2','D - LE 3',
+                'D - LE 4','D - LE 5','GE',
+                'Cycling', 'COX/MAL') #Dysplastic sample epithelial cell type order
+
 #Color Palette
 tdtCols <- c("Pos"="darkred",
              'Neg'='#909090')
 
-
-#Load epithelial subsets
-ContEpi = readRDS(file ="./data/FinalSamples/cont_Epi_mU7_mU30_Final_01262024_noMeso.rds",  # Filename
-                  refhook = NULL)
-EarEpi = readRDS(file ="./data/Ear_Epi_mU7_mU30_recluster_11212023_withUECE.rds",  # Filename
-                 refhook = NULL)
-LEpi = readRDS(file ="./data/Late_Epi_mU7_mU30_recluster_01282024_CE.rds",  # Filename
-               refhook = NULL)
-
-####Supp. Fig 5A - tdTomato Expression and positive cells in Normal Samples####
+#Supp. Fig 9A - tdTomato Expression and positive cells in Normal Samples####
 #Feature Plot
 Feat_Tdt <- FeaturePlot(ContEpi, features='TdTomato-UTR', pt.size=0.25)+
             scale_color_viridis(option = 'A', begin=0.9, end=0,na.value=gray(0.8),
@@ -72,14 +94,13 @@ plot <- ggplot(data = NewTab,            # Dataset to use for plot.  Needs to be
         axis.text.y = element_text(color = 'black', hjust = 1),                # Text color and horizontal adjustment on y-axis
         legend.position = "right")+
   scale_fill_manual(values=tdtCols)+
-  scale_x_discrete(limits = c('Progenitor','LE 1','LE 2','GE','Epithelial - Foxj1+',
-                              'Cycling','Unidentified'
+  scale_x_discrete(limits = c(clusterord_cont
   ))
 plot # View plot
 
 ggsave('./plots/FinalSamples/Bar_ContEPI_TdTomato_final.pdf', plot, device='pdf', width=6, height=8, units='in', dpi=300)
 
-####Supp. Fig 5B - tdTomato Expression and positive cells in Pre-dysplastic Samples####
+####Supp. Fig 9B - tdTomato Expression and positive cells in Pre-dysplastic Samples####
 #Feature Plot
 Feat_Tdt <- FeaturePlot(EarEpi, features='TdTomato-UTR', pt.size=0.25)+
   scale_color_viridis(option = 'A', begin=0.9, end=0,na.value=gray(0.8),limits=c(10^-30,2.5))
@@ -123,9 +144,7 @@ plot <- ggplot(data = NewTab,            # Dataset to use for plot.  Needs to be
         axis.text.y = element_text(color = 'black', hjust = 1),                # Text color and horizontal adjustment on y-axis
         legend.position = "right")+
   scale_fill_manual(values=tdtCols)+
-  scale_x_discrete(limits = c('Progenitor 1','Progenitor 2','LE 1','LE 2',
-                              'GE','Epithelial - Foxj1+',
-                              'Cycling','Unidentified'
+  scale_x_discrete(limits = c(clusterord_ear
   ))
 plot # View plot
 
@@ -175,9 +194,7 @@ plot <- ggplot(data = NewTab,            # Dataset to use for plot.  Needs to be
         axis.text.y = element_text(color = 'black', hjust = 1),                # Text color and horizontal adjustment on y-axis
         legend.position = "right")+
   scale_fill_manual(values=tdtCols)+
-  scale_x_discrete(limits = c('Progenitor 1','Progenitor 2','Progenitor 3','LE 1','LE 2',
-                              'GE','Epithelial - Foxj1+',
-                              'Cycling'
+  scale_x_discrete(limits = c(clusterord_L
   ))
 plot # View plot
 
