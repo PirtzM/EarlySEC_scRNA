@@ -8,7 +8,7 @@
 ### Data Availability
 `Seurat Objects`: data objects for quick analysis of cell types within the mouse uterus at different stages of SEC progression and CellChat analysis. [Dryad]() [active upon publication]  
 
-`Raw Data`: raw and processed scRNA-seq and Visium data for the mouse uterus at normal, pre-dysplastic, and dysplastic stages of SEC. ([GEO Accession Number: GSE269332](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE269332))
+`Raw Data`: raw and processed scRNA-seq and Visium data for the mouse uterus at normal, pre-dysplastic, and dysplastic stages of SEC. [GEO](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE269332)
 
 Note: All Visium analysis was completed using LoupeBrowser7. Any spots visually outside of the tissue boarders were ignored for analysis. Aligned files for analysis are available through [Dryad]() [active upon publication]
 
