@@ -25,9 +25,6 @@ All samples were processed together according to `AllSamples_data_preprocess.R`.
 
 Each SEC specific dataset was subsetted from this All Sample dataset according to its stage. After subsetting, samples were re-scaled, re-integrated, and reclustered. Follow their individual preprocessing file for specific information.  
 
-### CellChat Analysis
-Use `AllSamples_CellChat_preparation.R` for information on how CellChat objects were created. The All Sample dataset was split by SEC stage using CellChat (v2.1.2) and processed to identify cell-cell interactions for further comparative analysis.  
-
 ### Subsetting epithelial cells from each dataset
 Follow files that include `EpiSubset` for specific workflow for subsetting epithelial cells. In general, full cell datasets of All Samples, Normal, Pre-dysplastic, and Dysplastic datasets were subsetted for their epithelial populations (identified by *Epcam* expression. Subsets were re-scaled, re-integrated, and reclustered. Follow their individual preprocessing file for specific information.  
 
