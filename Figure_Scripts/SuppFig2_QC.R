@@ -148,12 +148,12 @@ mycols_Lepi=c('D - LE 1'='#066DD4',
               'DDP'='#9f2b68'
 ) 
 
-#Supp. Figs 1A-1C ####
+#Supp. Figs 2A-2C ####
 #Load Non-QC with doublets data
 All.merged <- readRDS('./data/FinalSamples_preQC_02232024.rds')
 ncol(All.merged) #42,694 cells
 
-#Supp. Fig 1A - percent mitochondrial genes per sample####
+#Supp. Fig 2A - percent mitochondrial genes per sample####
 Pre_mt <- VlnPlot(All.merged, features=c('percent.mt'), group.by='Sample.ID', 
                   cols=sampCol, pt.size=0)+
   geom_hline(yintercept=25, linetype='dotted', color='red')+
@@ -162,7 +162,7 @@ Pre_mt
 
 ggsave('./plots/FinalSamples/Vln_preprocess_mt_V2.pdf', Pre_mt, device='pdf', width=11, height=8.5, units='in', dpi=300)
 
-#Supp. Fig 1B - RNA counts per sample####
+#Supp. Fig 2B - RNA counts per sample####
 Pre_Count <- VlnPlot(All.merged, features=c("nCount_RNA"), group.by='Sample.ID', 
                      cols=sampCol, pt.size=0)+
   geom_hline(yintercept=200, linetype='dotted', color='red')+
@@ -171,7 +171,7 @@ Pre_Count
 
 ggsave('./plots/FinalSamples/Vln_preprocess_Counts_V2.pdf', Pre_Count, device='pdf', width=11, height=8.5, units='in', dpi=300)
 
-#Supp. Fig 1C - RNA features per sample ####
+#Supp. Fig 2C - RNA features per sample ####
 Pre_feat <- VlnPlot(All.merged, features=c("nFeature_RNA"), group.by='Sample.ID',
                     cols=sampCol, pt.size=0)+
   geom_hline(yintercept=25, linetype='dotted', color='red')+
@@ -180,12 +180,12 @@ Pre_feat
 
 ggsave('./plots/FinalSamples/Vln_preprocess_features_V2.pdf', Pre_feat, device='pdf', width=11, height=8.5, units='in', dpi=300)
 
-#Supp. Figs 1D-1E ####
+#Supp. Figs 2D-2E ####
 #Load Non-QC with doublets data
 HQ_Cells <- readRDS('./data/FinalSamples_preDF_02232024.rds')
 ncol(HQ_Cells) #38,298 cells
 
-#Supp. Fig 1D - UMAP visualizing doublets in each cluster####
+#Supp. Fig 2D - UMAP visualizing doublets in each cluster####
 #UMAP
 DFUMAPFinder <- DimPlot(object = HQ_Cells,                 # Seurat object 
                         reduction = 'umap',
@@ -200,7 +200,7 @@ DFUMAPFinder
 
 ggsave('./plots/FinalSamples/UMAP_preDF_doublets_paper_V2.pdf', DFUMAPFinder, device='pdf', width=11, height=8.5, units='in', dpi=300)
 
-#Supp. Fig 1E - bar chart of doublets per cluster####
+#Supp. Fig 2E - bar chart of doublets per cluster####
 #Doublets per Cluster
 tab1 <- table(HQ_Cells$seurat_clusters)
 tab1
@@ -255,7 +255,7 @@ plot # View plot
 
 ggsave('./plots/Bar_DoubletCount_roughCluster_paper.pdf', plot, device='pdf', width=8, height=8, units='in', dpi=300)
 
-#Supp. Fig 1F - bar chart of cell type composition of the integrated dataset####
+#Supp. Fig 2F - bar chart of cell type composition of the integrated dataset####
 #load dataset
 IntData = readRDS(file ="./data/DiestrusMice_mU7_mU30_Final_01182025_simple.rds",  # Filename
                   refhook = NULL)
@@ -308,7 +308,7 @@ plot # View plot
 
 ggsave('./plots/FinalSamples/Bar_IntDataAll_Samples_cluster_01182025.pdf', last_plot(), device='pdf', width=11, height=8.5, units='in', dpi=300)
 
-#Supp. Fig 1G - bar chart of cell type composition of the integrated dataset epithelial cells####
+#Supp. Fig 2G - bar chart of cell type composition of the integrated dataset epithelial cells####
 #load dataset
 EpiOnly = readRDS(file ="./data/allDiestrus_Epi_mU7_mU30_recluster_final_01182025.rds",
                   refhook = NULL)
@@ -361,7 +361,7 @@ plot # View plot
 
 ggsave('./plots/FinalSamples/Bar_IntEpi_Clust_SE_fillSamp_01182025_NL.pdf', last_plot(), device='pdf', width=11, height=8.5, units='in', dpi=300)
 
-#Supp. Fig 1H - bar chart of cell type composition of Normal Samples####
+#Supp. Fig 2H - bar chart of cell type composition of Normal Samples####
 #Load samples
 ContOnly = readRDS(file ="./data/cont_mU7_mU30_Final_01182025.rds",  # Filename
                   refhook = NULL)
@@ -412,7 +412,7 @@ plot # View plot
 
 ggsave('./plots/FinalSamples/Bar_ContAll_Clust_fillSamp_SE_01182025.pdf', last_plot(), device='pdf', width=11, height=8.5, units='in', dpi=300)
 
-#Supp. Fig 1I - bar chart of cell type composition of Pre-dysplastic Samples####
+#Supp. Fig 2I - bar chart of cell type composition of Pre-dysplastic Samples####
 #Load samples
 EarOnly = readRDS(file ="./data/EarCan_recluster_mU7_mU30_01182025_simple.rds",  # Filename
                   refhook = NULL)
@@ -462,7 +462,7 @@ plot # View plot
 
 ggsave('./plots/FinalSamples/Bar_EarAll_Clust_fillSamp_SE_01182025_noL.pdf', last_plot(), device='pdf', width=11, height=8.5, units='in', dpi=300)
 
-####Supp. Fig 1J - bar chart of cell type composition of Dysplastic Samples####
+####Supp. Fig 2J - bar chart of cell type composition of Dysplastic Samples####
 #Load samples
 LOnly = readRDS(file ="./data/LateCan_recluster_mU7_mU30_01182025_simple.rds",  # Filename
                 refhook = NULL)
@@ -512,7 +512,7 @@ plot # View plot
 
 ggsave('./plots/FinalSamples/Bar_LateAll_Clust_fillSamp_SE_01182025_noL.pdf', last_plot(), device='pdf', width=11, height=8.5, units='in', dpi=300)
 
-#Supp. Fig 1K - bar chart of epithelial cell type composition of Normal epithelial subset samples####
+#Supp. Fig 2K - bar chart of epithelial cell type composition of Normal epithelial subset samples####
 #Load samples
 ContEpi = readRDS(file ='./data/FinalSamples/cont_Epi_mU7_mU30_Final_01182025.rds', # Filename
                   refhook = NULL)
@@ -536,7 +536,7 @@ for(i in 1:length(Freq.list)) {
 NewTab<-data.table::rbindlist(Freq.list, use.names=TRUE)
 NewTab
 
-#write.csv(NewTab,'./data/FinalSamples/SupportingData_paper1/ContEpi_ClusterPerSampleID_quantification_01182025.csv')
+write.csv(NewTab,'./data/FinalSamples/SupportingData_paper1/ContEpi_ClusterPerSampleID_quantification_01182025.csv')
 
 #Stacked Bar Plot
 colnames(NewTab) <- c("Var1",'CellType', 'Freq','FractionCells') #rename columns
@@ -563,7 +563,7 @@ plot # View plot
 
 ggsave('./plots/FinalSamples/Bar_ContEpi_Clust_fillSamp_01102025.pdf', last_plot(), device='pdf', width=11, height=8.5, units='in', dpi=300)
 
-#Supp. Fig 1L - bar chart of epithelial cell type composition of Pre-dysplastic epithelial subset samples####
+#Supp. Fig 2L - bar chart of epithelial cell type composition of Pre-dysplastic epithelial subset samples####
 #Load samples
 EarEpi = readRDS(file ="./data/Ear_Epi_mU7_mU30_recluster_01182025.rds",  # Filename
                   refhook = NULL)
@@ -587,7 +587,7 @@ for(i in 1:length(Freq.list)) {
 NewTab<-data.table::rbindlist(Freq.list, use.names=TRUE)
 NewTab
 
-#write.csv(NewTab,'./data/FinalSamples/SupportData_paper1_EarEpi_ClusterPerSampleID_quantification_01182025.csv')
+write.csv(NewTab,'./data/FinalSamples/SupportData_paper1_EarEpi_ClusterPerSampleID_quantification_01182025.csv')
 
 #Stacked Bar Plot
 colnames(NewTab) <- c("Var1",'CellType', 'Freq','FractionCells') #rename columns
@@ -614,7 +614,7 @@ plot # View plot
 
 ggsave('./plots/FinalSamples/Bar_EarEpi_Clust_fillSamp_01182025_noL.pdf', last_plot(), device='pdf', width=11, height=8.5, units='in', dpi=300)
 
-#Supp. Fig 1M - bar chart of epithelial cell type composition of Dysplastic epithelial subset samples####
+#Supp. Fig 2M - bar chart of epithelial cell type composition of Dysplastic epithelial subset samples####
 #Load samples
 LEpi = readRDS(file ="./data/Late_Epi_mU7_mU30_recluster_01182025.rds",  # Filename
                   refhook = NULL)
