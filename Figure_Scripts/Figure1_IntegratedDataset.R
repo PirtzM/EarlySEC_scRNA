@@ -7,9 +7,6 @@
 #Load Libraries
 library(Seurat)
 library(ggplot2)
-library(viridis)
-library(dplyr)
-library(patchwork)
 
 #Set working directory
 setwd("/workdir/mgp73/Studies/MouseSampleAnalysis/Diestrus_mU7_mU30_fixedDF/scripts")
