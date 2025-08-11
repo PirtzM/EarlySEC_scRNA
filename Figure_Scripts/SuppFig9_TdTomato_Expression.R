@@ -1,5 +1,5 @@
 ################################################################################
-##############################Supp Figure 9#####################################
+###############################Supp Fig. 9######################################
 ###################TdTomato positive cells per SEC stage########################
 ################################################################################
 
@@ -150,7 +150,7 @@ plot # View plot
 
 ggsave('./plots/FinalSamples/Bar_EarEPI_TdTomato_final.pdf', plot, device='pdf', width=6, height=8, units='in', dpi=300)
 
-####Supp. Fig 5C - tdTomato Expression and positive cells in Dysplastic Samples####
+####Supp. Fig 9C - tdTomato Expression and positive cells in Dysplastic Samples####
 #Feature Plot
 Feat_Tdt <- FeaturePlot(LEpi, features='TdTomato-UTR', pt.size=0.25)+
   scale_color_viridis(option = 'A', begin=0.9, end=0,na.value=gray(0.8),limits=c(10^-30,2.5))
