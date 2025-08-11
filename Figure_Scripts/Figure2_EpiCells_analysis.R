@@ -1,5 +1,5 @@
 ################################################################################
-#################################Figure 3#######################################
+#################################Figure 2#######################################
 #######Census of Epithelial Cell types in the mouse uterus-stages of SEC########
 ################################################################################
 
@@ -14,36 +14,56 @@ setwd("/workdir/mgp73/Studies/MouseSampleAnalysis/Diestrus_mU7_mU30_fixedDF/scri
 
 ####Load each SEC stage Epithelial Subsets####
 #Normal samples, n=5
-ContEpi = readRDS(file ="./data/FinalSamples/cont_Epi_mU7_mU30_Final_01262024_noMeso.rds",  
+ContEpi = readRDS(file ="./data/FinalSamples/cont_Epi_mU7_mU30_Final_01182025.rds",  
                    refhook = NULL)
 ncol(ContEpi) #4,689 cells
 Idents(ContEpi) <- ContEpi$seurat_clusters2 #Set Active Identity
 
 #Pre-dysplastic samples, n=7
-EarEpi = readRDS(file ="./data/Ear_Epi_mU7_mU30_recluster_11212023_withUECE.rds",
+EarEpi = readRDS(file ="./data/Ear_Epi_mU7_mU30_recluster_01182025.rds",
                   refhook = NULL)
 ncol(EarEpi) #7,713 cells
 Idents(EarEpi) <- EarEpi$seurat_clusters2 #Set Active Identity
 
 #Dysplastic samples, n=6
-LEpi = readRDS(file ="./data/Late_Epi_mU7_mU30_recluster_01282024_CE.rds",  # Filename
+LEpi = readRDS(file ="./data/Late_Epi_mU7_mU30_recluster_01182025.rds",  # Filename
                 refhook = NULL)
 ncol(LEpi) #7,063 cells
 Idents(LEpi) <- LEpi$seurat_clusters2 #Set Active Identity
 
 #Load Color Palette ####
 #UMAPs
-mycols=c('Progenitor'='#85b7b6', #referred to as 'Progenitor-like' in manuscript
-         'Progenitor 1'='#85b7b6', #referred to as 'Progenitor-like 1' in manuscript
-         'Progenitor 2'='#2bb38f', #referred to as 'Progenitor-like 2' in manuscript
-         'Progenitor 3'='#5A9F68', #referred to as 'Progenitor-like 3' in manuscript
-         'LE'='#2b7b7b',
-         'LE 1'='#2b7b7b',
-         'LE 2'='#005f7b',
-         'GE'='#34535e',
-         'Cycling'='#08314a',
-         'Unidentified'='#8f9779', #referred to as 'mt high' in manuscript
-         'Epithelial - Foxj1+'='#9f2b68'
+#Normal Samples
+mycols_ContEpi=c('N - LE 1'='#066DD4',
+                 'N - LE 2'='#54F2E3',
+                'N - LE 3'='#5dcdad',
+                'GE'='#8F03C8',
+                'Cycling'='#E86DE3',
+                'COX/MAL'='#5BB40B',
+                'DDP'='#9f2b68'
+)
+
+#Pre-dysplastic Samples
+mycols_EarEpi=c('PD - LE 1'='#066DD4',
+                'PD - LE 2'='#54F2E3',
+                'PD - LE 3'='#5dcdad',
+         'PD - LE 4'='#F4877F', 
+         'GE'='#8F03C8',
+         'Cycling'='#E86DE3',
+         'COX/MAL'='#5BB40B',
+         'DDP'='#9f2b68'
+)
+
+#Dysplastic Samples
+mycols_Lepi=c('D - LE 1'='#066DD4',
+              'D - LE 2'='#54F2E3',
+              'D - LE 3'='#5dcdad',
+         'D - LE 4'='#F4877F',
+         'D - LE 5'='#E3242B',
+         'GE'='#8F03C8',
+         'Cycling'='#E86DE3',
+         'COX/MAL'='#5BB40B',
+         'DDP'='#9f2b68'
 )
 
 #Bar Chart
