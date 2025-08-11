@@ -15,7 +15,7 @@ library(patchwork)
 setwd("/workdir/mgp73/Studies/MouseSampleAnalysis/Diestrus_mU7_mU30_fixedDF/scripts")
 
 #Load full object ####
-EpiOnly = readRDS(file ='./data/allDiestrus_Epi_mU7_mU30_recluster_final_01182025.rds',
+EpiOnly = readRDS(file ='./data/allDiestrus_Epi_mU7_mU30_recluster_final_01182025_simple.rds',
                   refhook = NULL)
 ncol(EpiOnly) #19,449 cells
 
