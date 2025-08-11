@@ -314,6 +314,7 @@ EpiOnly = readRDS(file ="./data/allDiestrus_Epi_mU7_mU30_recluster_final_0118202
                   refhook = NULL)
 ncol(EpiOnly) #19,449 cells
 
+#create dataframe with Sample ID and clusters
 tab1 <- table(EpiOnly$Sample.ID)
 tab1
 Freq<-table(EpiOnly$Sample.ID, EpiOnly$seurat_clusters_SE)
