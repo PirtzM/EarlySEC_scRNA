@@ -16,20 +16,24 @@ library(patchwork)
 setwd("/workdir/mgp73/Studies/MouseSampleAnalysis/Diestrus_mU7_mU30_fixedDF/scripts")
 
 #Load All Sample epithelial subset ####
-EpiOnly = readRDS(file ='./data/allDiestrus_Epi_mU7_mU30_recluster_final_01302024_noLE3.rds',
+EpiOnly = readRDS(file ='./data/allDiestrus_Epi_mU7_mU30_recluster_final_01182025.rds',
                   refhook = NULL)
 ncol(EpiOnly) #19,449 cells
 
 #Set order of SEC stages
 SECord= c('control', 'earlySEC','lateSEC') #(Normal, Pre-dysplastic, Dysplastic)
 
-####Supp. Fig 6 - Epithelial gene expression compared across SEC stages with their spatial locations####
-AllFeatures_space = c('Tacstd2','Prap1','Brca2','Cfb','Ckmt1','Clca1','Crabp2','Cxcl17',
-                      'Irf7','Lcn2','Mogat1','Morrbid','Muc4','Oas2','Pla2g2e','Prim1', #LE
-                      'Btg2','Dock11','Fat3','Met','Oasl2','Rb1','Trp53','Muc1','Padi1', #Both GE & LE
-                      'Foxa2','Foxj1','Axin2','Lgr5','Prom1','Aoc1',#Glandular Epithelium
-                      'Cdkn2a','Mki67',#'Ccne1','Cdk1','Cdk4','Pcna', #Cycling genes
-                      'Pgr','Esr1' #hormonally regulated genes
+#Supp. Fig 5 - Epithelial gene expression compared across SEC stages####
+AllFeatures_space = c('TdTomato-UTR','Epcam','Pax8', #General Epithelium
+                      'Esr1','Pgr', #hormone receptors
+                      'Ly6a','Klf4','Sox17','Tert','Nt5e','Hoxb5',
+                      'Cd44','Itga6','Sox2','Lrig1','Klf6','Sox9',
+                      'Tcf4','Dusp1','Btg2','Fos','Pax2','Wfdc2', #Putative Progenitor
+                      'Tacstd2','Neat1','Met','Prap1','Krt13','Klf5','Sprr2f','Crabp2', #Luminal Epithelium
+                      'Foxa2','Msx1','Gpx2','Wnt5a','Gstm7','Prom1','Aldh1a1','Axin2','Lgr5', 'Wif1', #Glandular Epithelium
+                      'Foxj1','Pde4c','Dnah12','Dand5', #PD/DN
+                      'Mki67','Cdkn2a','Top2a','Pcna', #Cycling genes
+                      'COX1','COX2', 'Malat1' #CM                    
 )
 
 
@@ -41,5 +45,5 @@ DotPlot(EpiOnly, features=rev(AllFeatures_space), col.min=0, col.max=2.5,
   theme(axis.text.x=element_text(angle=90, hjust=1, vjust=0.5))+
   scale_y_discrete(limits=SECord)+
   coord_flip()
-ggsave('./plots/DotPlot_ALLEpi_Spatial_IntDataEPI_SECstage.pdf', last_plot(), device='pdf',width=6, height=12,units='in', dpi=300)
+ggsave('./plots/DotPlot_ALLEpi_IntDataEPI_SECstage.pdf', last_plot(), device='pdf',width=6, height=12,units='in', dpi=300)
 
