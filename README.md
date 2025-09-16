@@ -1,8 +1,8 @@
 # EarlySEC_scRNA
 
 
-## Preprint Link
-[Flesken-Nikitin, A.\*, Pirtz, M.G.\*, et al., *bioRxiv*, 2024](https://www.biorxiv.org/content/10.1101/2024.03.15.585274v1)
+## Manuscript Link
+[Flesken-Nikitin, A.\*, Pirtz, M.G.\*, et al., *J Path*, 2025](https://pathsocjournals.onlinelibrary.wiley.com/doi/full/10.1002/path.6470)
 
 
 ### Data Availability
